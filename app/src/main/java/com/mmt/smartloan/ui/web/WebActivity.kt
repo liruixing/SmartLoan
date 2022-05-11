@@ -33,6 +33,7 @@ import com.mmt.smartloan.http.bean.Event
 import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.response.VersionInfo
 import com.mmt.smartloan.utils.BitmapUtils
+import com.mmt.smartloan.view.FloatButton
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.json.JSONObject
 import java.io.File
@@ -50,6 +51,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     @JvmField
     @BindView(R.id.wv_web)
     var webView: WebView? = null
+    @JvmField
+    @BindView(R.id.btn_float)
+    var btn_float: FloatButton? = null
 
     @JvmField
     @BindView(R.id.btn_1)
@@ -114,6 +118,15 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         injector = WebViewInjector(webView!!, this, mRawDataSDK!!,rxPermission!!)
         initWebSetting()
 
+        if(APIStore.PROVICY_URL == url || APIStore.CONDITION_URL == url){
+            btn_float?.visibility = View.GONE
+        }else{
+            btn_float?.visibility = View.VISIBLE
+        }
+        btn_float?.setOnClickListener{
+            mPresenter.clearCache(this@WebActivity, webView!!)
+            webView?.loadUrl(APIStore.H5_URL)
+        }
 
         btn1?.setOnClickListener {
             val bean: JSBean = JSBean()
