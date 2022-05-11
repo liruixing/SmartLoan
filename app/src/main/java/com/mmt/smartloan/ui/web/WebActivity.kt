@@ -121,6 +121,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         if(APIStore.PROVICY_URL == url || APIStore.CONDITION_URL == url){
             btn_float?.visibility = View.GONE
         }else{
+            mPresenter.checkupdate()
             btn_float?.visibility = View.VISIBLE
         }
         btn_float?.setOnClickListener{
@@ -154,7 +155,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             injector?.getAccuauthSDK(bean)
         }
 
-        mPresenter.checkupdate()
     }
 
 
