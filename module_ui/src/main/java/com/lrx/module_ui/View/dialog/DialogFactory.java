@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -95,6 +96,21 @@ public class DialogFactory {
     /*******************************************************以下是自定义的dialog
      * 方法*******************************************************************/
 
+    /**
+     * @param context     上下文
+     * @return
+     */
+    public Dialog getUpdateDialog(Context context,boolean canCancel,
+                                           View.OnClickListener configClick,
+                                           View.OnClickListener cancelClick) {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_update_smloan, null);
+        Button btnConfig = view.findViewById(R.id.btn_confirm);
+        ImageView imCancel = view.findViewById(R.id.im_cancel);
+
+        btnConfig.setOnClickListener(configClick);
+        imCancel.setOnClickListener(cancelClick);
+        return initDialog(context, R.style.style_dialog, view, canCancel, false);
+    }
     /**
      * @param context     上下文
      * @param title       标题

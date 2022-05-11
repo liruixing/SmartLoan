@@ -26,6 +26,7 @@ object AccountInfo {
 
     const val TOKEN_KEY = "token_key"
     const val PHONE_KEY = "phone_key"
+    const val H5VC_KEY = "h5VersionCode"
     const val USERID_KEY = "userid_key"
     const val IS_FIRST_KEY = "is_first"
     var hasUrl = arrayListOf<String>(

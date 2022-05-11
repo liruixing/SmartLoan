@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/layout_content"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="64dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/shape_r8_bg_white"
+            android:orientation="vertical"
+            >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dialog_update_title"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="107dp"
+            android:textColor="#333333"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dialog_update_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="@dimen/px_30"
+                android:layout_marginRight="@dimen/px_30"
+                android:lineSpacingExtra="@dimen/px_12"
+                android:layout_marginTop="17dp"
+                android:textColor="#666666"
+                android:textSize="16sp"
+                />
+
+          <Button
+              android:id="@+id/btn_confirm"
+              android:layout_width="match_parent"
+              android:layout_height="50dp"
+              android:layout_marginTop="30dp"
+              android:background="@drawable/shape_r8_bg_blue"
+              android:text="@string/dialog_update_button"
+              android:textColor="#FFFFFF"
+              android:textSize="18sp"
+              android:textAllCaps="false"
+              />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="210dp"
+            android:layout_height="140dp"
+            android:layout_centerHorizontal="true"
+            android:background="@mipmap/ic_update_dialog_title"
+            />
+
+        <ImageView
+            android:id="@+id/im_cancel"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/layout_content"
+            android:layout_marginTop="30dp"
+            android:src="@mipmap/ic_update_dialog_cancel"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -98,7 +98,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
 
     override fun init() {
         super.init()
-//        ScreenUtil.setStatusTranslucent(this)
         url = intent.getStringExtra(URL_KEY)
         mRawDataSDK = RawDataSDK(this, object : SDKCallback {
             override fun onSuccess(file: File?, md5: String?, orderno: String?, isSubmit: Boolean, json: String?) {
@@ -448,26 +447,33 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         forcedUpdate: Boolean
     ) {
         super.showUpdateDialog(vi, forcedUpdate)
-        DialogFactory.getInstance().getTwoButtonDialogNormal(this,
-            resources.getString(R.string.mine_version) +vi.versionName,
-            resources.getString(R.string.cancle),
-            resources.getString(R.string.sure),
-            vi.link,
+        DialogFactory.getInstance().getUpdateDialog(this,!vi.isForcedUpdate,
             { v: View? ->
-                DialogFactory.getInstance().dismiss()
                 if (vi.isForcedUpdate) {
-                    AppManagerUtil.getInstance().finishAllActivity()
+                    DialogFactory.getInstance().dismiss()
                 }
-            }
-        ) { v: View? ->
+                var link = vi.link
+                if(!link.startsWith("http")){
+                    link = "http://"+link
+                }
+                val intent = Intent("android.intent.action.VIEW")
+                val content_url = Uri.parse(link)
+                intent.data = content_url
+                startActivity(intent)
+            }, { v: View? ->
+            DialogFactory.getInstance().dismiss()
             if (vi.isForcedUpdate) {
-                DialogFactory.getInstance().dismiss()
+                AppManagerUtil.getInstance().finishAllActivity()
             }
-            val intent = Intent()
-            intent.action = "android.intent.action.VIEW"
-            val content_url = Uri.parse(vi.link)
-            intent.data = content_url
-            startActivity(intent)
+        }
+        )
+    }
+
+    override fun cleanCacheAndReload() {
+        super.cleanCacheAndReload()
+        webView?.let {
+            mPresenter.clearCache(this, it)
+            it.loadUrl(APIStore.H5_URL)
         }
     }
 
@@ -492,6 +498,5 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         }
         return super.onKeyDown(keyCode, event)
     }
-
 
 }

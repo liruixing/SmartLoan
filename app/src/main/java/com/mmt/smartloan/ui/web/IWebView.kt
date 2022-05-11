@@ -14,4 +14,6 @@ interface IWebView : IBaseMVPView {
         vi: VersionInfo,
         forcedUpdate: Boolean
     ) {}
+
+    fun cleanCacheAndReload() {}
 }

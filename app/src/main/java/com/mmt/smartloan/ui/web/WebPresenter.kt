@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.webkit.WebView
 import com.lrx.module_base.base.BasePresenter
+import com.lrx.module_base.utils.SPUtils
 import com.mmt.smartloan.BuildConfig
+import com.mmt.smartloan.config.AccountInfo
 import com.mmt.smartloan.http.APIManager
 import java.lang.Exception
 
@@ -30,6 +32,11 @@ class WebPresenter: BasePresenter<IWebView>() {
                         if(cv<versionC){//需要更新
                             mView.showUpdateDialog(it,forcedUpdate)
                         }
+                        val oldH5Code:Int = SPUtils.get(mView.activity,AccountInfo.H5VC_KEY,-1) as Int
+                        if(oldH5Code>=0 && oldH5Code<it.h5VersionCode){
+                            mView.cleanCacheAndReload()
+                        }
+                        SPUtils.put(mView.activity,AccountInfo.H5VC_KEY,it.h5VersionCode)
                     }catch (e:Exception){
 
                     }

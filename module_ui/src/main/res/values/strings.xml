@@ -5,4 +5,7 @@
     <string name="dialog_cancle">退出</string>
     <string name="dialog_unit">请输入生产单元</string>
     <string name="dialog_woNumber">请输入工单号</string>
+    <string name="dialog_update_title">Nueva versión disponible</string>
+    <string name="dialog_update_content">Por favor, actualice a la última versión</string>
+    <string name="dialog_update_button">Confirmar</string>
 </resources>
