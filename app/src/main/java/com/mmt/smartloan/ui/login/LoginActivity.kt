@@ -3,9 +3,7 @@ package com.mmt.smartloan.ui.login
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.text.Editable
 import android.text.Spannable
-import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.view.View
@@ -16,6 +14,7 @@ import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.mmt.smartloan.R
 import com.mmt.smartloan.http.APIStore
+import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
 import com.mmt.smartloan.utils.TextUtil
 import com.mmt.smartloan.utils.ToastUtils
@@ -112,6 +111,11 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
                 ToastUtils.showToast(R.string.login_empty_phone_toast)
                 return@setOnClickListener
             }
+
+            if(!isTen){
+                ToastUtils.showToast(R.string.login_empty_phone_notright)
+                return@setOnClickListener
+            }
             if(!isAgree){
                 ToastUtils.showToast(R.string.login_agree_privacy_toast)
                 return@setOnClickListener
@@ -126,9 +130,12 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         }, 300)
     }
 
-    override fun gotoRegister(existed:Boolean) {
-        super.gotoRegister(existed)
-        RegisterActivity.start(this@LoginActivity, et_phone?.text.toString()?:"",existed)
+    override fun gotoRegister(
+        existed: Boolean,
+        bean: VerCode
+    ) {
+        super.gotoRegister(existed,bean)
+        RegisterActivity.start(this@LoginActivity, et_phone?.text.toString()?:"",existed,bean)
     }
 
 }

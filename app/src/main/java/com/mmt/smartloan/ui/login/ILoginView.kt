@@ -1,6 +1,7 @@
 package com.mmt.smartloan.ui.login
 
 import com.lrx.module_base.base.IBaseMVPView
+import com.mmt.smartloan.http.bean.response.VerCode
 
 /**
  * create by Dennis
@@ -8,5 +9,5 @@ import com.lrx.module_base.base.IBaseMVPView
  * description：
  **/
 interface ILoginView:IBaseMVPView {
-    fun gotoRegister(existed:Boolean) {}
+    fun gotoRegister(existed: Boolean, bean: VerCode) {}
 }

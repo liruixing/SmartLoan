@@ -49,8 +49,8 @@ class WebPresenter: BasePresenter<IWebView>() {
     }
 
     fun clearCache(context:Context,webView:WebView){
-        context.deleteDatabase("webviewCache.db");
-        context.deleteDatabase("webview.db");
+//        context.deleteDatabase("webviewCache.db");
+//        context.deleteDatabase("webview.db");
         webView.clearCache(true);
         webView.clearHistory();
         webView.clearFormData();

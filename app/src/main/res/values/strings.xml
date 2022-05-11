@@ -4,8 +4,11 @@
     <string name="login_privacy1_hint"> &lt;Términos de Servicio&gt; </string>
     <string name="login_privacy2_hint"> &lt;Política de privacidad&gt; </string>
     <string name="login_privacy_hint"> Al continuar,acepta nuestros&lt;Términos de Servicio&gt;,&lt;Política de privacidad&gt; </string>
-    <string name="login_empty_phone_toast">Please enter the phone number first.</string>
-    <string name="login_agree_privacy_toast">Please agree to the privacy agreement first.</string>
+    <string name="login_empty_code_toast">Código de verificación vacío</string>
+    <string name="login_empty_code_notright">Codigo de verificacion invalido, envia nuevamente</string>
+    <string name="login_empty_phone_toast">número telefónico vacío</string>
+    <string name="login_empty_phone_notright">Formato erróneo de número telefónico</string>
+    <string name="login_agree_privacy_toast">no aceptar el término y condiciones</string>
 
     <string name="register_get_code">Conseguir</string>
     <string name="register_code_hint">Código de verificación</string>

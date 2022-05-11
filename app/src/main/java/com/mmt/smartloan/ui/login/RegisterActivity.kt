@@ -61,16 +61,19 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
     private var phone:String? = null
     private var isExisted:Boolean = false
+    private var bean:VerCode? = null
 
 
     companion object{
         const val PHONE_KEY = "phone_key"
         const val IS_EXISTED = "is_existed"
+        const val VERCODE_KEY = "VerCode"
 
-        fun start(context: Context, phone:String,existed: Boolean){
+        fun start(context: Context, phone:String,existed: Boolean,bean:VerCode){
             val intent = Intent(context,RegisterActivity::class.java)
             intent.putExtra(PHONE_KEY,phone)
             intent.putExtra(IS_EXISTED,existed)
+            intent.putExtra(VERCODE_KEY,bean)
             context.startActivity(intent)
         }
 
@@ -90,7 +93,11 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
         phone = intent.getStringExtra(PHONE_KEY)?:""
         isExisted = intent.getBooleanExtra(IS_EXISTED,false)
+        bean = intent.getSerializableExtra(VERCODE_KEY) as VerCode?
 
+        bean?.let {
+            getCodeSuccess(it)
+        }
 
         ScreenUtil.setStatusTranslucent(this)
         val sp = TextUtil.setLoginCorlor(getString(R.string.login_privacy_hint),
@@ -162,8 +169,12 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             val isEmpty = et_code?.text.isNullOrBlank()
 
             val isSix = et_code?.text?.length!! >5
-            if(isEmpty || !isSix){
-                ToastUtils.showToast(R.string.login_empty_phone_toast)
+            if(isEmpty){
+                ToastUtils.showToast(R.string.login_empty_code_toast)
+                return@setOnClickListener
+            }
+            if(!isSix){
+                ToastUtils.showToast(R.string.login_empty_code_notright)
                 return@setOnClickListener
             }
             if(!isAgree){
@@ -174,7 +185,6 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
         }
 
-        tv_getCode?.performClick()
 
     }
 
