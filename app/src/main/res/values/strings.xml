@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">SmartLoan</string>
+    <string name="login_edittext_hint"> número de teléfono </string>
+    <string name="login_privacy1_hint"> &lt;Términos de Servicio&gt; </string>
+    <string name="login_privacy2_hint"> &lt;Política de privacidad&gt; </string>
+    <string name="login_privacy_hint"> Al continuar,acepta nuestros&lt;Términos de Servicio&gt;,&lt;Política de privacidad&gt; </string>
+    <string name="login_empty_phone_toast">Please enter the phone number first.</string>
+    <string name="login_agree_privacy_toast">Please agree to the privacy agreement first.</string>
+
+    <string name="register_get_code">Conseguir</string>
+    <string name="register_code_hint">Código de verificación</string>
+
+    <string name="main_plazo">Plazo: Maximo %1$s dias</string>
+    <string name="main_tasa">Tasa de interes:%1$s/dia</string>
+
+    <string name="mine_version">Version </string>
+    <string name="cancle">cancel</string>
+    <string name="sure">determine</string>
+</resources>

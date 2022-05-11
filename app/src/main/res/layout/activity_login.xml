@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@mipmap/bg_login"
+        />
+
+    <ImageView
+        android:id="@+id/im_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/px_76"
+        android:padding="@dimen/px_22"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginLeft="@dimen/px_14"
+        android:src="@mipmap/ic_arrow_left_grey"
+        android:visibility="invisible"
+        />
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/im_back"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/px_8"
+        android:layout_marginLeft="@dimen/px_38"
+        android:layout_marginRight="@dimen/px_158"
+        android:textSize="25sp"
+        android:textColor="@color/white"
+        android:text="Tasa De 99% \n
+Aprobación Del"
+        android:textStyle="bold"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tv_login"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="@dimen/px_226"
+        android:layout_marginRight="@dimen/px_15"
+        android:layout_marginLeft="@dimen/px_15"
+        android:background="@drawable/bg_login_input"
+        android:orientation="vertical"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="@drawable/bg_edittext"
+            android:layout_marginLeft="@dimen/px_22"
+            android:layout_marginRight="@dimen/px_22"
+            android:layout_marginTop="@dimen/px_30"
+            >
+            <TextView
+                android:id="@+id/tv_precode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/px_11"
+                android:textSize="15sp"
+                android:textColor="#290C3F"
+                android:layout_centerVertical="true"
+                tools:text="+52"
+                />
+
+
+            <com.mmt.smartloan.view.PhoneFormatEditText
+                android:id="@+id/cet_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/tv_precode"
+                android:lines="1"
+                android:textSize="16sp"
+                android:layout_marginLeft="@dimen/px_20"
+                android:layout_marginRight="@dimen/px_30"
+                android:background="@null"
+                android:hint="@string/login_edittext_hint"
+                android:inputType="number"
+                android:maxLength="12"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_deep_blue"
+            android:layout_marginTop="@dimen/px_26"
+            android:layout_marginLeft="@dimen/px_22"
+            android:layout_marginRight="@dimen/px_22"
+            >
+            <TextView
+                android:id="@+id/tv_login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="Siguiente"
+                android:textStyle="bold"
+                />
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/tv_login_btn"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/px_20"
+                android:src="@mipmap/ic_long_right_arrow"
+                />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/px_32"
+            android:layout_marginLeft="@dimen/px_22"
+            android:layout_marginRight="@dimen/px_22"
+            >
+            <CheckBox
+                android:id="@+id/cb_privacy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+            <TextView
+                android:id="@+id/tv_privacy"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:textSize="12sp"
+                android:lineSpacingExtra="@dimen/px_8"
+                android:textColor="#999999"
+                android:text="@string/login_privacy_hint"
+                />
+
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/px_28"
+            />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

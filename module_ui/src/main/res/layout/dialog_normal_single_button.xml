@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/layout_ll_outside"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_r1_bg_b1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_title"
+                style="@style/style_t2_c3"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/global_default_M20"
+                android:text="标题"
+                android:textStyle="bold"
+                android:visibility="visible" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                style="@style/style_t2_c3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="start"
+                android:lineSpacingExtra="5dp"
+                android:minHeight="@dimen/dialog_content_minHeight"
+                android:padding="@dimen/global_default_M20"
+                android:text="内容内容内容内容内容内容内容内容容内容内容" />
+
+            <View
+                android:id="@+id/view_line1"
+                style="@style/view_line_l2"></View>
+
+            <Button
+                android:id="@+id/btn_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/global_item_H40"
+                android:background="@drawable/shape_r1_bg_b1_corner_bottom"
+                android:text="确定"
+                android:textColor="@color/c1_red"
+                android:textSize="@dimen/t2_15" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:dante="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_rl_global_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.siberiadante.titlelayoutlib.TitleBarLayout
+        android:id="@+id/title_layoutbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:tag="title_layoutbar"
+        dante:d_is_back_view="false"
+        dante:d_is_immersive_state_bar="true"
+        dante:d_left_image_padding_end="0dp"
+        dante:d_left_image_padding_start="6dp"
+        dante:d_left_text=""
+        dante:d_left_text_color="@color/white"
+        dante:d_left_text_padding_start="0dp"
+        dante:d_left_text_size="@dimen/text_size14"
+        dante:d_line_height="0px"
+        dante:d_line_background="@color/col_transparent"
+        dante:d_right_text=""
+        dante:d_right_text_size="@dimen/text_size14"
+        dante:d_title_color="@color/white"
+        dante:d_title_layout_background="@drawable/title_bg"
+        dante:d_title_layout_height="45dp"
+        dante:d_title_size="@dimen/text_size18"
+        dante:d_title_text=""
+        dante:d_right_image_width="20dp"
+        dante:d_right_image_padding_end="15dp"/>
+
+</RelativeLayout>

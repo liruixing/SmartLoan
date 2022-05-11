@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical"
+    >
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/im_top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:background="@mipmap/bg_main_top"
+            />
+        <ImageView
+            android:id="@+id/im_bank_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@mipmap/icon_bank_tips"
+            android:layout_marginTop="@dimen/px_68"
+            android:layout_marginRight="@dimen/px_160"
+            />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/im_bank_tips"
+            android:layout_marginTop="@dimen/px_68"
+            android:gravity="center_horizontal"
+            >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textColor="#290C3F"
+                android:text="Monto accesible"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/px_12"
+                android:textSize="45sp"
+                android:textColor="#290C3F"
+                android:text=""
+                android:textStyle="bold"
+                tools:text="$30,000"
+                />
+            <TextView
+                android:id="@+id/tv_depos"
+                android:layout_width="wrap_content"
+                android:layout_height="28dp"
+                android:background="@drawable/bg_light_red"
+                android:text="Depositamos: 5mins"
+                android:gravity="center"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginTop="@dimen/px_9"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left"
+                >
+                <CheckBox
+                    android:id="@+id/cb_plazo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px_40"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#DC787C"
+                    android:textSize="14sp"
+                    android:text="@string/main_plazo"
+                    />
+                <CheckBox
+                    android:id="@+id/cb_tasa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/px_40"
+                    android:textColor="#DC787C"
+                    android:textSize="14sp"
+                    android:text="@string/main_tasa"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+
+        <include
+            android:id="@+id/layout_step"
+            layout="@layout/view_main_step_by_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/px_44"
+            app:layout_constraintTop_toBottomOf="@id/im_top"
+            app:layout_constraintLeft_toLeftOf="parent"
+            />
+
+        <RelativeLayout
+            android:id="@+id/btn_main"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@drawable/bg_deep_blue"
+            android:layout_marginTop="29dp"
+            android:layout_marginLeft="@dimen/px_22"
+            android:layout_marginRight="@dimen/px_22"
+            app:layout_constraintTop_toBottomOf="@id/layout_step"
+            >
+            <TextView
+                android:id="@+id/tv_login_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="17sp"
+                android:textColor="@color/white"
+                android:text="¡SOLICITAR AHORA!"
+                android:textStyle="bold"
+                />
+        </RelativeLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

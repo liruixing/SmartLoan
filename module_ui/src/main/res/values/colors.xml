@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="b1_white">#FFFFFF</color><!--主色：白色-->
+    <color name="col_transparent">#00000000</color><!--主色：白色-->
+
+    <color name="tab_bg_selected">#00000000</color>
+    <color name="tab_bg_normal">#FFFFFFFF</color>
+    <!-- 底部选项卡文本颜色 -->
+    <color name="tab_text_normal">#FFB9B8B8</color>
+    <color name="tab_text_selected">#FF2CADBA</color>
+
+    <color name="color_4038ADFF">#4038ADFF</color>
+    <color name="color_38ADFF">#38ADFF</color>
+    <color name="c3_black">#2f2f2f</color><!--灰色系：整体主要用色-->
+    <color name="c6_black">#333333</color>
+    <color name="color_89E1EA">#89E1EA</color><!--灰色系：一般颜色-->
+    <color name="color_cc89E1EA">#1A89E1EA</color>
+    <color name="color_88DFE4">#88DFE4</color><!--灰色系：一般颜色-->
+    <color name="L2">#ebebec</color><!--线条色-->
+    <color name="c1_red">#ff6c44</color><!--主色：高亮色、警示文字色-->
+    <color name="c9_grey">#666666</color>
+    <color name="color_fff">#FFF</color><!--失效的内容-->
+    <color name="color_black_10">#1A000000</color>
+    <color name="color_black_20">#33000000</color>
+    <color name="color_black_30">#4D000000</color>
+    <color name="color_black_40">#66000000</color>
+    <color name="color_black_50">#80000000</color>
+    <color name="color_black_60">#FF444444</color>
+    <color name="color_black_70">#B3000000</color>
+    <color name="color_black_80">#CC000000</color>
+    <color name="color_black_90">#E6000000</color>
+</resources>

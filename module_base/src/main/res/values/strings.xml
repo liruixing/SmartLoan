@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">module_base</string>
+
+    <string name="title_back">返回</string>
+    <string name="jmui_logout_title">提示</string>
+    <string name="jmui_logout_tips">您的账号在其他设备上登陆</string>
+    <string name="jmui_logout_exit">我知道了</string>
+</resources>

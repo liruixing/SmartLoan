@@ -1,0 +1,8 @@
+rootProject.name = "SmartLoan"
+include ':app',
+        ':module_base',
+        ':LibNetwork',
+        ':module_ui',
+        ':module_dbdata',
+        ':titlelayoutlib',
+        ':liveness'

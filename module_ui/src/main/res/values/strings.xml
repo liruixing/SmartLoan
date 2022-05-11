@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">module_ui</string>
+    <string name="txt_dialog_loading">Please wait.</string>
+    <string name="dialog_check">检查</string>
+    <string name="dialog_cancle">退出</string>
+    <string name="dialog_unit">请输入生产单元</string>
+    <string name="dialog_woNumber">请输入工单号</string>
+</resources>

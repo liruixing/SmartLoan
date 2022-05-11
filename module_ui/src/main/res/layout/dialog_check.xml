@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_loading_white"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_check_tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="center"
+        android:text="title"
+        android:textColor="@color/c6_black"
+        android:textSize="20sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/c9_grey"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <EditText
+            android:id="@+id/dialog_check_edt_unit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ellipsize="end"
+            android:hint="@string/dialog_unit"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/dialog_check_edt_wonumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ellipsize="end"
+            android:hint="@string/dialog_woNumber"
+            android:maxLines="2"
+            android:paddingLeft="10dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="20dp">
+
+        <Button
+            android:id="@+id/dialog_check_btn_cancle"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:background="@drawable/check_cancle"
+            android:text="@string/dialog_cancle"
+            android:textColor="@color/color_89E1EA" />
+
+        <Button
+            android:id="@+id/dialog_check_btn_check"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/check_sure"
+            android:text="@string/dialog_check"
+            android:textColor="@color/color_fff" />
+
+    </LinearLayout>
+
+</LinearLayout>
