@@ -1,5 +1,6 @@
 package com.mmt.smartloan.http.bean.request;
 
+import com.mmt.smartloan.BuildConfig;
 import com.mmt.smartloan.MyApplication;
 import com.mmt.smartloan.config.AccountInfo;
 import com.mmt.smartloan.utils.ConfigUtil;
@@ -10,10 +11,16 @@ import com.mmt.smartloan.utils.ConfigUtil;
  * description：
  **/
 public class AddActiveRequest extends BaseRequest{
+    private String installReferce = AccountInfo.INSTANCE.getInstallReferce();
     private String installReferceClickTime;
     private String installStartTime;
-    private String appName;
-    private String mac;
+    private int adrVersion = ConfigUtil.getAdrVersion(MyApplication.Companion.getAppContext());
+    private String appVersion = ConfigUtil.getAppVersion(MyApplication.Companion.getAppContext());
+    private String androidId = ConfigUtil.getAndroidID(MyApplication.Companion.getAppContext());
+    private String imei  = ConfigUtil.getIMEI(MyApplication.Companion.getAppContext());
+    private String packageName = BuildConfig.APPLICATION_ID;
+    private String appName="SmartLoan";
+    private String mac = ConfigUtil.getNewMac();
     private String serial;
     private long releaseDate;
     private String deviceName;

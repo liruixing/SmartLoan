@@ -51,7 +51,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     @BindView(R.id.wv_web)
     var webView: WebView? = null
 
-
     @JvmField
     @BindView(R.id.btn_1)
     var btn1: Button? = null
@@ -71,8 +70,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     private var mUploadMessage: ValueCallback<Array<Uri>>? = null
     private var size: Long = 0
     var rxPermission: RxPermissions? = null
-
-
 
     companion object {
         const val URL_KEY = "url_key"

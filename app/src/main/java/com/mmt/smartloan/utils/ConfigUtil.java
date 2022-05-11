@@ -70,14 +70,14 @@ public class ConfigUtil {
     }
 
     public static String getIMEI(Context context) {
-        String result = "";
+        String result = "00000000000000";
         try {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                return "";
+                return "00000000000000";
             }
             result = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
         } catch (Exception e) {
-            return "";
+            return "00000000000000";
         }
         return result;
     }
@@ -232,6 +232,19 @@ public class ConfigUtil {
      */
     public static String getSystemVersion() {
         return android.os.Build.VERSION.RELEASE;
+    }
+
+
+    public static String getCountryCode(Context context){
+        String result = "";
+        try {
+            TelephonyManager tm =
+                    (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+            result = tm.getSimCountryIso();
+        }catch (Exception e){
+
+        }
+        return result;
     }
 
 

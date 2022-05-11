@@ -17,6 +17,7 @@ import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.bean.request.AddActiveRequest
 import com.mmt.smartloan.http.bean.request.EventLogRequest
 import com.mmt.smartloan.service.LogInfoService
+import com.mmt.smartloan.utils.GoogleReferrerHelper
 import com.mmt.smartloan.utils.TextUtil
 import com.st.network.http.config.RxNetwork
 import com.st.network.http.config.RxNetworkConfig
@@ -118,6 +119,9 @@ class MyApplication : Application() {
         //监听生命周期
         registerActivityLifecycleCallbacks(mLifecycleCallback)
 
+        mHandler?.postDelayed({
+            GoogleReferrerHelper.getIns().addActive()
+        },3*1000)
     }
 
     private fun initSDKS() {

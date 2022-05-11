@@ -1,5 +1,7 @@
 package com.mmt.smartloan.http.bean.request;
 
+import com.appsflyer.AppsFlyerLib;
+import com.mmt.smartloan.BuildConfig;
 import com.mmt.smartloan.MyApplication;
 import com.mmt.smartloan.config.AccountInfo;
 import com.mmt.smartloan.utils.ConfigUtil;
@@ -14,11 +16,15 @@ import java.util.List;
  **/
 public class EventLogRequest extends BaseRequest{
 
+    private String packageName = BuildConfig.APPLICATION_ID;
+    private String afId = AppsFlyerLib.getInstance().getAppsFlyerUID(MyApplication.Companion.getAppContext());
+    private String androidId = ConfigUtil.getAndroidID(MyApplication.Companion.getAppContext());
+    private String imei  = ConfigUtil.getIMEI(MyApplication.Companion.getAppContext());
     private String phoneNumber;
     private String userId;
     private List<EventLogItem> eventList;
     private String merchantID = "000";
-    private String country;
+    private String country = ConfigUtil.getCountryCode(MyApplication.Companion.getAppContext());
     private String utm_source = AccountInfo.INSTANCE.getInstallReferce();
 
     public String getPhoneNumber() {
@@ -67,5 +73,37 @@ public class EventLogRequest extends BaseRequest{
 
     public void setUtm_source(String utm_source) {
         this.utm_source = utm_source;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
+    }
+
+    public String getAfId() {
+        return afId;
+    }
+
+    public void setAfId(String afId) {
+        this.afId = afId;
+    }
+
+    public String getAndroidId() {
+        return androidId;
+    }
+
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
     }
 }

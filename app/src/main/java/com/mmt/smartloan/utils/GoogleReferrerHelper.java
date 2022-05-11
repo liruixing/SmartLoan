@@ -98,7 +98,6 @@ public class GoogleReferrerHelper {
             AccountInfo.INSTANCE.setInstallReferce(referrerUrl);
             AccountInfo.INSTANCE.setReferrerClickTime(referrerClickTime * 1000);
             AccountInfo.INSTANCE.setInstallStartTime(appInstallTime * 1000);
-            addActive();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -107,8 +106,9 @@ public class GoogleReferrerHelper {
     /**
      * 上传参数
      */
-    private void addActive() {
+    public void addActive() {
         boolean isFirst = (boolean) SPUtils.get(MyApplication.Companion.getAppContext(), AccountInfo.IS_FIRST_KEY, true);
+        if(!isFirst)return;
         AddActiveRequest request = new AddActiveRequest();
         request.setInstallReferceClickTime(new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(
                 new Date(AccountInfo.INSTANCE.getReferrerClickTime())));
@@ -138,7 +138,6 @@ public class GoogleReferrerHelper {
         request.setApiLevel(Build.VERSION.SDK_INT);
         request.setNetworkOperatorName(ConfigUtil.getOperators(MyApplication.Companion.getAppContext()));
 
-        if(!isFirst)return;
         APIManager.getInstance().addActive(request).subscribe(
                 b->{
                     if(b){
