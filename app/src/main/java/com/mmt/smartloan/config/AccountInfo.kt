@@ -23,7 +23,6 @@ object AccountInfo {
     var installStartTime:Long = 0L
 
 
-
     const val TOKEN_KEY = "token_key"
     const val PHONE_KEY = "phone_key"
     const val H5VC_KEY = "h5VersionCode"

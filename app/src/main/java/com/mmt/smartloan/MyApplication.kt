@@ -19,6 +19,7 @@ import com.mmt.smartloan.http.bean.request.AddActiveRequest
 import com.mmt.smartloan.http.bean.request.EventLogRequest
 import com.mmt.smartloan.service.LogInfoService
 import com.mmt.smartloan.utils.GoogleReferrerHelper
+import com.mmt.smartloan.utils.LocationUtils
 import com.mmt.smartloan.utils.TextUtil
 import com.st.network.http.config.RxNetwork
 import com.st.network.http.config.RxNetworkConfig
@@ -53,6 +54,7 @@ class MyApplication : Application() {
             //开启收集日志
             AccountInfo.isCollectLog = true
             AccountInfo.logList.clear()
+            LocationUtils.getLocation(this@MyApplication)
         }
 
         override fun onActivityStopped(activity: Activity?) {

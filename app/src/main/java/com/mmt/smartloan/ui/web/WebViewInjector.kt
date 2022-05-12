@@ -104,6 +104,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         item.eventType = data.eventType
         item.pageName = data.pageName
         item.orderNo = data.orderNo
+
         AccountInfo.logList.add(item)
         AccountInfo.isUpload = data.isUpload
 

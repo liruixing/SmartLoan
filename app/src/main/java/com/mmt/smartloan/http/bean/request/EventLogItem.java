@@ -1,6 +1,7 @@
 package com.mmt.smartloan.http.bean.request;
 
 import com.lrx.module_base.base.BaseData;
+import com.mmt.smartloan.utils.LocationUtils;
 
 /**
  * create by Dennis
@@ -13,8 +14,8 @@ public class EventLogItem extends BaseData {
     private String orderNo;
     private String pageName;
     private String time = System.currentTimeMillis()+"";
-    private String longitude = "NaN";
-    private String latitude = "NaN";
+    private String longitude = LocationUtils.INSTANCE.getLongitude();
+    private String latitude = LocationUtils.INSTANCE.getLatitude();
 
     public String getEventOption() {
         return eventOption;
