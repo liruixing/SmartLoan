@@ -142,6 +142,8 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         btn_float?.setOnClickListener{
             mPresenter.clearCache(this@WebActivity, webView!!)
             webView?.loadUrl(APIStore.H5_URL)
+            showLoadingView()
+            Log.d("TAG","点击重新打开webview")
         }
 
         btn1?.setOnClickListener {
@@ -325,6 +327,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
 
             override fun onPageFinished(webView: WebView?, s: String?) {
                 Log.i("TAG", "onPageFinished: $s")
+                heidenLoadingView()
                 super.onPageFinished(webView, s)
             }
         })
