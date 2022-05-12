@@ -24,6 +24,7 @@ import com.getmessage.rawdatasdk.RawDataSDK
 import com.getmessage.rawdatasdk.SDKCallback
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
+import com.lrx.module_base.utils.SPUtils
 import com.lrx.module_ui.View.dialog.DialogFactory
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
@@ -32,7 +33,9 @@ import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.Event
 import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.response.VersionInfo
+import com.mmt.smartloan.ui.login.LoginActivity
 import com.mmt.smartloan.utils.BitmapUtils
+import com.mmt.smartloan.utils.GoogleReferrerHelper
 import com.mmt.smartloan.view.FloatButton
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.json.JSONObject
@@ -99,9 +102,13 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         return R.layout.activity_web
     }
 
+    private fun initGoogleInstall() {
+        GoogleReferrerHelper.getIns().start(this)
+    }
 
     override fun init() {
         super.init()
+        initGoogleInstall()
         url = intent.getStringExtra(URL_KEY)
         mRawDataSDK = RawDataSDK(this, object : SDKCallback {
             override fun onSuccess(file: File?, md5: String?, orderno: String?, isSubmit: Boolean, json: String?) {
@@ -121,9 +128,16 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         if(APIStore.PROVICY_URL == url || APIStore.CONDITION_URL == url){
             btn_float?.visibility = View.GONE
         }else{
-            mPresenter.checkupdate()
+            val token = SPUtils.get(this@WebActivity,AccountInfo.TOKEN_KEY,"") as String
+            if(token.isNullOrBlank()){
+                LoginActivity.start(this@WebActivity)
+                this.finish()
+            }else{
+                mPresenter.checkupdate()
+            }
             btn_float?.visibility = View.VISIBLE
         }
+
         btn_float?.setOnClickListener{
             mPresenter.clearCache(this@WebActivity, webView!!)
             webView?.loadUrl(APIStore.H5_URL)
