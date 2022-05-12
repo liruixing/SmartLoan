@@ -22,6 +22,7 @@ import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
+import com.mmt.smartloan.utils.AFUtil
 import com.mmt.smartloan.utils.EventUtils
 import com.mmt.smartloan.utils.TextUtil
 import com.mmt.smartloan.utils.ToastUtils
@@ -170,6 +171,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
                 2
             }
             addEvent("click","resend")
+            AFUtil.up(this, "logincode_verificationResend")
             mPresenter.getCode(phone!!,type)
         }
 
@@ -180,17 +182,21 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             val isSix = et_code?.text?.length!! >5
             if(isEmpty){
                 ToastUtils.showToast(R.string.login_empty_code_toast)
+                AFUtil.up(this@RegisterActivity, "toast_logincode_"+resources.getString(R.string.login_empty_code_toast))
                 return@setOnClickListener
             }
             if(!isSix){
                 ToastUtils.showToast(R.string.login_empty_code_notright)
+                AFUtil.up(this@RegisterActivity, "toast_logincode_"+resources.getString(R.string.login_empty_code_notright))
                 return@setOnClickListener
             }
             if(!isAgree){
                 ToastUtils.showToast(R.string.login_agree_privacy_toast)
+                AFUtil.up(this@RegisterActivity, "toast_logincode_"+resources.getString(R.string.login_agree_privacy_toast))
                 return@setOnClickListener
             }
 
+            AFUtil.up(this@RegisterActivity, "logincode_confirm")
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
             addEvent("click","confirm")
         }
@@ -198,12 +204,14 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         tv_getCode?.setOnFocusChangeListener { view, b ->
             if(b){
                 addEvent("input","otpCode")
+                AFUtil.up(this, "logincode_codeInput")
             }else{
                 addEvent("leave", "otpCode")
             }
         }
 
         addEvent("open","")
+        AFUtil.up(this, "logincode_open")
 
     }
 

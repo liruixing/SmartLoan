@@ -12,10 +12,15 @@ import android.widget.*
 import butterknife.BindView
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
+import com.lrx.module_base.utils.SPUtils
 import com.mmt.smartloan.R
+import com.mmt.smartloan.config.AccountInfo
+import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.APIStore
+import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
+import com.mmt.smartloan.utils.AFUtil
 import com.mmt.smartloan.utils.EventUtils
 import com.mmt.smartloan.utils.TextUtil
 import com.mmt.smartloan.utils.ToastUtils
@@ -91,6 +96,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
                 addEvent("click","termOfService")
+                AFUtil.up(this@LoginActivity, "loginPhone_termOfService")
                 WebActivity.start(this@LoginActivity,APIStore.CONDITION_URL)
             }
         },index1,index2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -98,6 +104,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
                 addEvent("click","privacyPolicy")
+                AFUtil.up(this@LoginActivity, "loginPhone_privacy")
                 WebActivity.start(this@LoginActivity,APIStore.PROVICY_URL)
             }
         },index3,index4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
@@ -120,18 +127,23 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
             if(isEmpty || !isTen){
                 ToastUtils.showToast(R.string.login_empty_phone_toast)
+                AFUtil.up(this@LoginActivity, "toast_loginphone_"+resources.getString(R.string.login_empty_phone_toast))
                 return@setOnClickListener
             }
 
             if(!isTen){
                 ToastUtils.showToast(R.string.login_empty_phone_notright)
+                AFUtil.up(this@LoginActivity, "toast_loginphone_"+resources.getString(R.string.login_empty_phone_notright))
                 return@setOnClickListener
             }
             if(!isAgree){
                 ToastUtils.showToast(R.string.login_agree_privacy_toast)
+                AFUtil.up(this@LoginActivity, "toast_loginphone_"+resources.getString(R.string.login_agree_privacy_toast))
                 return@setOnClickListener
             }
             addEvent("click","next")
+            AFUtil.up(this@LoginActivity, "loginPhone_sendOtp")
+            AFUtil.up(this@LoginActivity, "loginPhone_next")
             mPresenter.existsByMobile(et_phone?.text.toString())
         }
 
@@ -144,6 +156,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         et_phone?.setOnFocusChangeListener { view, b ->
             if(b){
                 addEvent("input","phoneNum")
+                AFUtil.up(this@LoginActivity, "loginPhone_phoneInput")
             }else{
                 addEvent("leave","phoneNum")
             }
@@ -152,11 +165,13 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         val isopen = intent.extras?.getBoolean(IS_OPEN_KEY)?:true
 
         addEvent("open","")
+        AFUtil.up(this, "loginPhone_open")
     }
 
     override fun onPause() {
         super.onPause()
         addEvent("exit","")
+        AFUtil.up(this, "loginPhone_back")
     }
     override fun gotoRegister(
         existed: Boolean,
@@ -164,6 +179,16 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
     ) {
         super.gotoRegister(existed,bean)
         RegisterActivity.start(this@LoginActivity, et_phone?.text.toString()?:"",existed,bean)
+    }
+
+    override fun loginRegisterSuccess(registerInfo: RegisterInfo?) {
+        super.loginRegisterSuccess(registerInfo)
+        SPUtils.put(this, AccountInfo.TOKEN_KEY,registerInfo?.token?:"")
+        SPUtils.put(this, AccountInfo.USERID_KEY,registerInfo?.userId?:"")
+        SPUtils.put(this, AccountInfo.PHONE_KEY,et_phone?.getPhone())
+        APIManager.getInstance().updateToken(registerInfo?.token?:"")
+        WebActivity.start(this)
+        AppManagerUtil.getInstance().finishAllButNot(WebActivity::class.java)
     }
 
     private fun addEvent(type:String,option:String){

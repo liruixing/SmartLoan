@@ -9,6 +9,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import com.appsflyer.AFInAppEventType
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.lrx.module_base.utils.SPUtils
@@ -161,6 +162,7 @@ class MyApplication : Application() {
 //        //开启线程收集日志
 //        val intent = Intent(this,LogInfoService::class.java)
 //        startService(intent)
+
     }
 
 

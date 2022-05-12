@@ -2,7 +2,11 @@ package com.mmt.smartloan.ui.login
 
 import com.lrx.module_base.base.BasePresenter
 import com.mmt.smartloan.http.APIManager
+import com.mmt.smartloan.http.bean.request.LoginRequest
+import com.mmt.smartloan.http.bean.request.RegisterRequest
 import com.mmt.smartloan.http.bean.request.VerCodeRequest
+import com.mmt.smartloan.utils.AFUtil
+import com.mmt.smartloan.utils.BeanMapUtils
 import com.mmt.smartloan.utils.ToastUtils
 
 /**
@@ -35,7 +39,11 @@ class LoginPresenter:BasePresenter<ILoginView>() {
             }
             .subscribe(
                 {
-                    mView.gotoRegister(isExisted,it)
+                    if(it.isEnableAutoLogin){
+                        submit(str,it.code,true,isExisted)
+                    }else{
+                        mView.gotoRegister(isExisted,it)
+                    }
                 },
                 {
                     ToastUtils.showToast(it.message)
@@ -45,6 +53,57 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     hideLoading()
                 }
             )
+
+    }
+
+
+
+    fun submit(phone: String, code: String,isAuto:Boolean,isExisted:Boolean) {
+        val str = phone.replace(" ","")
+        AFUtil.up(mView.activity, "login_automatic")
+        showLoading()
+        if(isExisted){//登录
+            AFUtil.up(mView.activity, "loginPhone_login")
+            val request = LoginRequest()
+            request.mobile = str
+            request.verifyCode = code
+            request.verified = !isAuto
+            val map:MutableMap<String,Any> = BeanMapUtils.getObjectToMap(request)
+            APIManager.getInstance().login(map)
+                .subscribe(
+                    {
+                        AFUtil.up(mView.activity, "login_automatic_success")
+                        mView.loginRegisterSuccess(it)
+                    },
+                    {
+                        hideLoading()
+                        ToastUtils.showToast(it.message)
+                        AFUtil.up(mView.activity, "login_automatic_fail")
+                    },
+                    {
+                        hideLoading()
+                    }
+                )
+        }else{//注册
+            AFUtil.up(mView.activity, "loginPhone_reg")
+            val request = RegisterRequest()
+            request.isVerified = !isAuto
+            request.mobile = str
+            request.verifyCode = code
+            APIManager.getInstance().register(request)
+                .subscribe(
+                    {
+                        mView.loginRegisterSuccess(it)
+                    },
+                    {
+                        hideLoading()
+                        ToastUtils.showToast(it.message)
+                    },
+                    {
+                        hideLoading()
+                    }
+                )
+        }
 
     }
 }

@@ -36,10 +36,7 @@ import com.mmt.smartloan.http.bean.Event
 import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.response.VersionInfo
 import com.mmt.smartloan.ui.login.LoginActivity
-import com.mmt.smartloan.utils.BitmapUtils
-import com.mmt.smartloan.utils.EventUtils
-import com.mmt.smartloan.utils.GoogleReferrerHelper
-import com.mmt.smartloan.utils.ToastUtils
+import com.mmt.smartloan.utils.*
 import com.mmt.smartloan.view.FloatButton
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.json.JSONObject
@@ -360,15 +357,22 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
 
                         addEvent("click","file_yes")
                         addEvent("click","camera_yes")
+                        AFUtil.up(this@WebActivity, "author_media_yes")
+                        AFUtil.up(this@WebActivity, "author_file_yes")
                     } else if (it.shouldShowRequestPermissionRationale) {
 //                        用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
                         addEvent("click","file_no")
                         addEvent("click","camera_no")
+                        AFUtil.up(this@WebActivity, "author_media_no")
+                        AFUtil.up(this@WebActivity, "author_file_no")
                     } else {
                         //用户选中了  不再询问
                         addEvent("click","file_completeNo")
                         addEvent("click","camera_completeNo")
+                        AFUtil.up(this@WebActivity, "author_media_no")
+                        AFUtil.up(this@WebActivity, "author_file_no")
                         ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                        AFUtil.up(this@WebActivity, "toast_author_"+resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
 
@@ -484,12 +488,15 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
                     addEvent("click","phone_yes")
+                    AFUtil.up(this@WebActivity, "author_phone_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_PHONE_STATE)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_PHONE_STATE)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","phone_completeNo")
+                    AFUtil.up(this@WebActivity, "author_phone_no")
                 }else{
                     addEvent("click","phone_no")
+                    AFUtil.up(this@WebActivity, "author_phone_no")
                 }
             }
 
@@ -497,12 +504,15 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
                     addEvent("click","location_yes")
+                    AFUtil.up(this@WebActivity, "author_locate_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.ACCESS_FINE_LOCATION)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","location_completeNo")
+                    AFUtil.up(this@WebActivity, "author_locate_no")
                 }else{
                     addEvent("click","location_no")
+                    AFUtil.up(this@WebActivity, "author_locate_no")
                 }
             }
 
@@ -510,12 +520,15 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
                     addEvent("click","message_yes")
+                    AFUtil.up(this@WebActivity, "author_message_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_SMS)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_SMS)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","message_completeNo")
+                    AFUtil.up(this@WebActivity, "author_message_no")
                 }else{
                     addEvent("click","message_no")
+                    AFUtil.up(this@WebActivity, "author_message_no")
                 }
             }
         }
@@ -540,8 +553,10 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 val content_url = Uri.parse(link)
                 intent.data = content_url
                 startActivity(intent)
+                AFUtil.up(this@WebActivity, "updateConfirm_yes")
             }, { v: View? ->
             DialogFactory.getInstance().dismiss()
+                AFUtil.up(this@WebActivity, "updateConfirm_no")
             if (vi.isForcedUpdate) {
                 AppManagerUtil.getInstance().finishAllActivity()
             }

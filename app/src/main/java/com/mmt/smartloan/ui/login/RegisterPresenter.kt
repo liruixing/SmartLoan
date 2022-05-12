@@ -6,6 +6,7 @@ import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.bean.request.LoginRequest
 import com.mmt.smartloan.http.bean.request.RegisterRequest
 import com.mmt.smartloan.http.bean.request.VerCodeRequest
+import com.mmt.smartloan.utils.AFUtil
 import com.mmt.smartloan.utils.BeanMapUtils
 import com.mmt.smartloan.utils.ToastUtils
 
@@ -44,6 +45,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
         val str = phone.replace(" ","")
         showLoading()
         if(isExisted){//登录
+            AFUtil.up(mView.activity, "logincode_login")
             val request = LoginRequest()
             request.mobile = str
             request.verifyCode = code
@@ -52,9 +54,11 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
             APIManager.getInstance().login(map)
                     .subscribe(
                             {
+                                AFUtil.up(mView.activity, "logincode_LoginSuccess")
                                 mView.registerSuccess(it)
                             },
                             {
+                                AFUtil.up(mView.activity, "logincode_Loginfailed")
                                 hideLoading()
                                 ToastUtils.showToast(it.message)
                             },
@@ -63,6 +67,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             }
                     )
         }else{//注册
+            AFUtil.up(mView.activity, "logincode_reg")
             val request = RegisterRequest()
             request.isVerified = !isAuto
             request.mobile = str
@@ -70,9 +75,11 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
             APIManager.getInstance().register(request)
                     .subscribe(
                             {
+                                AFUtil.up(mView.activity, "logincode_RegSuccess")
                                 mView.registerSuccess(it)
                             },
                             {
+                                AFUtil.up(mView.activity, "logincode_Regfailed")
                                 hideLoading()
                                 ToastUtils.showToast(it.message)
                             },

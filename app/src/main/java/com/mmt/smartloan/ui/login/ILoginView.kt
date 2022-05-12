@@ -1,6 +1,7 @@
 package com.mmt.smartloan.ui.login
 
 import com.lrx.module_base.base.IBaseMVPView
+import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 
 /**
@@ -10,4 +11,5 @@ import com.mmt.smartloan.http.bean.response.VerCode
  **/
 interface ILoginView:IBaseMVPView {
     fun gotoRegister(existed: Boolean, bean: VerCode) {}
+    fun loginRegisterSuccess(it: RegisterInfo?) {}
 }

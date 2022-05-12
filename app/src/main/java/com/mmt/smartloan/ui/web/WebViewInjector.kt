@@ -152,6 +152,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                     if (it.granted) {
                         if(needToEvent){
                             addEvent("click","ontact_yes")
+                            AFUtil.up(context, "author_contact_yes")
                         }
                         isSelectContact = data.isSelectContact
                         selectContactIndex = data.selectContactIndex
@@ -160,11 +161,13 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                     }else if(it.shouldShowRequestPermissionRationale){
                         if(needToEvent){
                             addEvent("click","contact_no")
+                            AFUtil.up(context, "author_contact_no")
                         }
                     }else{
                         if(needToEvent){
                             addEvent("click","contact_completeNo")
                         }
+                        AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
                         ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
@@ -175,11 +178,28 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
 //        调起前先检查拍照权限，有权限就调起sdk，没权限就去请求权限，在权限回调里：允许了就调起sdk，拒绝了不做操作
         val data = bean.data
         faceId = bean.id
-        rxPermissions.request(PermissionUtils.CAMERA)
+        if(!PermissionUtils.hasPermission(context,PermissionUtils.CAMERA)){
+            needToEvent = true
+        }
+        rxPermissions.requestEach(PermissionUtils.CAMERA)
                 .subscribe {
-                    if (it) {//请求权限
+                    if (it.granted) {//请求权限
+                        addEvent("click","camera_yes")
+                        AFUtil.up(context, "author_media_yes")
                         val intent = Intent(context, LivenessActivity::class.java)
                         context.startActivityForResult(intent, WebActivity.REQUEST_CODE_LIVENESS)
+                    }else if(it.shouldShowRequestPermissionRationale){
+                        if(needToEvent){
+                            addEvent("click","camera_no")
+                            AFUtil.up(context, "author_media_no")
+                        }
+                    }else{
+                        if(needToEvent){
+                            addEvent("click","camera_completeNo")
+                            AFUtil.up(context, "author_media_no")
+                        }
+                        AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
+                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
     }
