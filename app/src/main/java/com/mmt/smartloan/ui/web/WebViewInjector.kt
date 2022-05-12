@@ -1,14 +1,18 @@
 package com.mmt.smartloan.ui.web
 
 import ai.advance.liveness.sdk.activity.LivenessActivity
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.provider.ContactsContract
 import android.util.Log
 import android.webkit.JavascriptInterface
 import android.webkit.WebView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.appsflyer.AppsFlyerLib
 import com.getmessage.rawdatasdk.RawDataSDK
 import com.google.gson.Gson
@@ -16,15 +20,14 @@ import com.lrx.module_base.base.BaseActivity
 import com.lrx.module_base.utils.SPUtils
 import com.mmt.smartloan.BuildConfig
 import com.mmt.smartloan.MyApplication
+import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
 import com.mmt.smartloan.http.APIManager
-import com.mmt.smartloan.http.bean.*
+import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.request.EventLogItem
 import com.mmt.smartloan.http.bean.request.EventLogRequest
 import com.mmt.smartloan.ui.login.LoginActivity
-import com.mmt.smartloan.utils.AFUtil
-import com.mmt.smartloan.utils.ConfigUtil
-import com.mmt.smartloan.utils.TextUtil
+import com.mmt.smartloan.utils.*
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -44,6 +47,9 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
     var timeId = ""
     var faceId = ""
     var contactId = ""
+
+    var needToEvent:Boolean = false
+
 
 
     fun getLoginInfo(bean: JSBean) {
@@ -138,13 +144,28 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
 //        先检查通讯录权限，有权限就去选择联系人，没权限就请求权限，在权限回调里：允许了就去选择联系人，拒绝了不做任何操作
         val data = bean.data
         contactId = bean.id
-        rxPermissions.request(PermissionUtils.READ_CONTACTS)
+        if(!PermissionUtils.hasPermission(context,PermissionUtils.READ_CONTACTS)){
+            needToEvent = true
+        }
+        rxPermissions.requestEach(PermissionUtils.READ_CONTACTS)
                 .subscribe {
-                    if (it) {
+                    if (it.granted) {
+                        if(needToEvent){
+                            addEvent("click","ontact_yes")
+                        }
                         isSelectContact = data.isSelectContact
                         selectContactIndex = data.selectContactIndex
                         var intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
                         context.startActivityForResult(intent, WebActivity.REQUEST_CODE_CONTACT)
+                    }else if(it.shouldShowRequestPermissionRationale){
+                        if(needToEvent){
+                            addEvent("click","contact_no")
+                        }
+                    }else{
+                        if(needToEvent){
+                            addEvent("click","contact_completeNo")
+                        }
+                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
     }
@@ -303,4 +324,11 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
             Log.d("WEB_JS", loadUrl)
         }
     }
+
+
+
+    private fun addEvent(type:String,option:String){
+        EventUtils.addEvent("author-授权弹窗",type,option)
+    }
+
 }

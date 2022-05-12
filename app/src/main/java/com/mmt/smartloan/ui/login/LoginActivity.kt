@@ -16,6 +16,7 @@ import com.mmt.smartloan.R
 import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
+import com.mmt.smartloan.utils.EventUtils
 import com.mmt.smartloan.utils.TextUtil
 import com.mmt.smartloan.utils.ToastUtils
 import com.mmt.smartloan.view.PhoneFormatEditText
@@ -53,8 +54,10 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
     companion object{
         const val MAX_PHONE_LEN = 10
-        fun start(context:Context){
+        const val IS_OPEN_KEY = "isopen"
+        fun start(context:Context,isOpen:Boolean = true){
             val intent = Intent(context,LoginActivity::class.java)
+            intent.putExtra(IS_OPEN_KEY,isOpen)
             context.startActivity(intent)
         }
     }
@@ -87,16 +90,24 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
+                addEvent("click","termOfService")
                 WebActivity.start(this@LoginActivity,APIStore.CONDITION_URL)
             }
         },index1,index2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
+                addEvent("click","privacyPolicy")
                 WebActivity.start(this@LoginActivity,APIStore.PROVICY_URL)
             }
         },index3,index4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         tv_privacy?.setText(sp)
+
+        cb_privacy?.setOnCheckedChangeListener { compoundButton, b ->
+            if(b){
+                addEvent("click","agreement")
+            }
+        }
 
         im_back?.setOnClickListener {
             AppManagerUtil.getInstance().finishAllActivity()
@@ -120,6 +131,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
                 ToastUtils.showToast(R.string.login_agree_privacy_toast)
                 return@setOnClickListener
             }
+            addEvent("click","next")
             mPresenter.existsByMobile(et_phone?.text.toString())
         }
 
@@ -128,14 +140,34 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
             val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             manager.showSoftInput(et_phone, 0)
         }, 300)
+
+        et_phone?.setOnFocusChangeListener { view, b ->
+            if(b){
+                addEvent("input","phoneNum")
+            }else{
+                addEvent("leave","phoneNum")
+            }
+        }
+
+        val isopen = intent.extras?.getBoolean(IS_OPEN_KEY)?:true
+
+        addEvent("open","")
     }
 
+    override fun onPause() {
+        super.onPause()
+        addEvent("exit","")
+    }
     override fun gotoRegister(
         existed: Boolean,
         bean: VerCode
     ) {
         super.gotoRegister(existed,bean)
         RegisterActivity.start(this@LoginActivity, et_phone?.text.toString()?:"",existed,bean)
+    }
+
+    private fun addEvent(type:String,option:String){
+        EventUtils.addEvent("loginPhone-手机号页面",type,option)
     }
 
 }

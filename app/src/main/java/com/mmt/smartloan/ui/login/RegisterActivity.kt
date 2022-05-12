@@ -22,6 +22,7 @@ import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
+import com.mmt.smartloan.utils.EventUtils
 import com.mmt.smartloan.utils.TextUtil
 import com.mmt.smartloan.utils.ToastUtils
 import com.siberiadante.titlelayoutlib.utils.ScreenUtil
@@ -114,19 +115,26 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
-                WebActivity.start(this@RegisterActivity, APIStore.PROVICY_URL)
+                addEvent("click","termOfService")
+                WebActivity.start(this@RegisterActivity, APIStore.CONDITION_URL)
             }
         },index1,index2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
-                WebActivity.start(this@RegisterActivity, APIStore.CONDITION_URL)
+                addEvent("click","privacyPolicy")
+                WebActivity.start(this@RegisterActivity, APIStore.PROVICY_URL)
             }
         },index3,index4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         tv_privacy?.setText(sp)
-
         cb_privacy?.isChecked = true
         cb_privacy?.isEnabled = false
+
+        cb_privacy?.setOnCheckedChangeListener { compoundButton, b ->
+            if(b){
+                addEvent("click","agreement")
+            }
+        }
 
         im_back?.setOnClickListener {
             finish()
@@ -161,6 +169,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             }else{
                 2
             }
+            addEvent("click","resend")
             mPresenter.getCode(phone!!,type)
         }
 
@@ -183,8 +192,18 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             }
 
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
+            addEvent("click","confirm")
         }
 
+        tv_getCode?.setOnFocusChangeListener { view, b ->
+            if(b){
+                addEvent("input","otpCode")
+            }else{
+                addEvent("leave", "otpCode")
+            }
+        }
+
+        addEvent("open","")
 
     }
 
@@ -228,5 +247,13 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             }
         }
         timer.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        addEvent("exit","")
+    }
+    private fun addEvent(type:String,option:String){
+        EventUtils.addEvent("loginCode-验证码页面",type,option)
     }
 }

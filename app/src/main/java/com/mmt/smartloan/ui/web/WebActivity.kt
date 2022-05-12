@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
@@ -19,6 +20,7 @@ import android.webkit.WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
 import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import butterknife.BindView
 import com.getmessage.rawdatasdk.RawDataSDK
 import com.getmessage.rawdatasdk.SDKCallback
@@ -35,7 +37,9 @@ import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.response.VersionInfo
 import com.mmt.smartloan.ui.login.LoginActivity
 import com.mmt.smartloan.utils.BitmapUtils
+import com.mmt.smartloan.utils.EventUtils
 import com.mmt.smartloan.utils.GoogleReferrerHelper
+import com.mmt.smartloan.utils.ToastUtils
 import com.mmt.smartloan.view.FloatButton
 import com.tbruyelle.rxpermissions2.RxPermissions
 import org.json.JSONObject
@@ -351,13 +355,20 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 .subscribe {
                     if (it.granted) {
                         //权限通过
-//                        val intent = createDefaultOpenableIntent()
                         val intent = createCameraIntent()
                         startActivityForResult(intent, REQUEST_CODE_PICTURE)
+
+                        addEvent("click","file_yes")
+                        addEvent("click","camera_yes")
                     } else if (it.shouldShowRequestPermissionRationale) {
 //                        用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                        addEvent("click","file_no")
+                        addEvent("click","camera_no")
                     } else {
                         //用户选中了  不再询问
+                        addEvent("click","file_completeNo")
+                        addEvent("click","camera_completeNo")
+                        ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
 
@@ -467,6 +478,48 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         if (requestCode == RawDataSDK.RequestCode && mRawDataSDK != null) {
             mRawDataSDK?.onRequestPermission();
         }
+
+        permissions.forEachIndexed { index, s ->
+            if(PermissionUtils.READ_PHONE_STATE == s && grantResults.size > index){
+                val grant = grantResults[index]
+                if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
+                    addEvent("click","phone_yes")
+                }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_PHONE_STATE)
+                    && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_PHONE_STATE)==PackageManager.PERMISSION_DENIED
+                ){//权限拒绝并不再询问
+                    addEvent("click","phone_completeNo")
+                }else{
+                    addEvent("click","phone_no")
+                }
+            }
+
+            if(PermissionUtils.ACCESS_FINE_LOCATION == s && grantResults.size > index){
+                val grant = grantResults[index]
+                if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
+                    addEvent("click","location_yes")
+                }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.ACCESS_FINE_LOCATION)
+                    && ActivityCompat.checkSelfPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED
+                ){//权限拒绝并不再询问
+                    addEvent("click","location_completeNo")
+                }else{
+                    addEvent("click","location_no")
+                }
+            }
+
+            if(PermissionUtils.READ_SMS == s && grantResults.size > index){
+                val grant = grantResults[index]
+                if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
+                    addEvent("click","message_yes")
+                }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_SMS)
+                    && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_SMS)==PackageManager.PERMISSION_DENIED
+                ){//权限拒绝并不再询问
+                    addEvent("click","message_completeNo")
+                }else{
+                    addEvent("click","message_no")
+                }
+            }
+        }
+
     }
 
     override fun showUpdateDialog(
@@ -524,6 +577,10 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             }
         }
         return super.onKeyDown(keyCode, event)
+    }
+
+    private fun addEvent(type:String,option:String){
+        EventUtils.addEvent("author-授权弹窗",type,option)
     }
 
 }

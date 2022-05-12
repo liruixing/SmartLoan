@@ -42,6 +42,6 @@ object AccountInfo {
 
     var logList:ArrayList<EventLogItem> = arrayListOf()
 
-    var uploadList:ArrayList<EventLogItem> = arrayListOf()
+    var uploadList:ArrayList<EventLogItem> = arrayListOf()//复制使用，避免线程安全导致的崩溃
 
 }
