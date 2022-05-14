@@ -23,10 +23,7 @@ import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
-import com.mmt.smartloan.utils.AFUtil
-import com.mmt.smartloan.utils.EventUtils
-import com.mmt.smartloan.utils.TextUtil
-import com.mmt.smartloan.utils.ToastUtils
+import com.mmt.smartloan.utils.*
 import com.siberiadante.titlelayoutlib.utils.ScreenUtil
 
 
@@ -162,6 +159,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         })
 
         tv_getCode?.setOnClickListener{
+            if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
             val txt = tv_getCode?.text.toString()
             if(txt != getString(R.string.register_get_code) ){
                 return@setOnClickListener
@@ -178,6 +176,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         }
 
         btn_login?.setOnClickListener{
+            if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
             val isAgree = cb_privacy?.isChecked?:false
             val isEmpty = et_code?.text.isNullOrBlank()
 

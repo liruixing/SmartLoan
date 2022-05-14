@@ -21,10 +21,7 @@ import com.mmt.smartloan.http.APIStore
 import com.mmt.smartloan.http.bean.response.RegisterInfo
 import com.mmt.smartloan.http.bean.response.VerCode
 import com.mmt.smartloan.ui.web.WebActivity
-import com.mmt.smartloan.utils.AFUtil
-import com.mmt.smartloan.utils.EventUtils
-import com.mmt.smartloan.utils.TextUtil
-import com.mmt.smartloan.utils.ToastUtils
+import com.mmt.smartloan.utils.*
 import com.mmt.smartloan.view.PhoneFormatEditText
 import com.siberiadante.titlelayoutlib.utils.ScreenUtil
 
@@ -96,6 +93,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
+                if(FastDoubleClickUtils.isFastDoubleClick(widget))return
                 addEvent("click","termOfService")
                 AFUtil.up(this@LoginActivity, "loginPhone_termOfService")
                 WebActivity.start(this@LoginActivity,APIStore.CONDITION_URL)
@@ -104,6 +102,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
         sp.setSpan(object : ClickableSpan(){
             override fun onClick(widget: View) {
+                if(FastDoubleClickUtils.isFastDoubleClick(widget))return
                 addEvent("click","privacyPolicy")
                 AFUtil.up(this@LoginActivity, "loginPhone_privacy")
                 WebActivity.start(this@LoginActivity,APIStore.PROVICY_URL)
@@ -116,10 +115,12 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         }
 
         im_back?.setOnClickListener {
+            if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
             AppManagerUtil.getInstance().finishAllActivity()
         }
 
         btn_login?.setOnClickListener{
+            if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
             val isAgree = cb_privacy?.isChecked?:false
             val isEmpty = et_phone?.text.isNullOrBlank()
             val isTen = et_phone?.getPhone()?.length!! >9
