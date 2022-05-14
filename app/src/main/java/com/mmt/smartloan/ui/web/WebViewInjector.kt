@@ -79,11 +79,11 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
     }
 
     fun toLogin(bean: JSBean) {
+        logout(bean)
         val token = SPUtils.get(context, AccountInfo.TOKEN_KEY, "")
         val value = JSONObject()
         value.put("token", token)
         sendMessage(value.toString(), bean.callback, bean.id)
-        logout(bean)
     }
 
     fun logout(bean: JSBean) {
@@ -106,9 +106,10 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         item.orderNo = data.orderNo
 
         AccountInfo.logList.add(item)
-        AccountInfo.isUpload = data.isUpload
 
         AccountInfo.uploadList = TextUtil.deepCopy(AccountInfo.logList)
+        AccountInfo.logList.clear()
+
         if (AccountInfo.isUpload) {
             val request = EventLogRequest()
             request.userId = SPUtils.get(context, AccountInfo.USERID_KEY, "") as String?
@@ -120,9 +121,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe {
                         {
-                            AccountInfo.logList.clear()
-                        }
-                        {
+                            AccountInfo.uploadList.clear()
                         }
                         {
                             AccountInfo.uploadList.clear()
@@ -349,6 +348,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
 
 
     private fun addEvent(type:String,option:String){
+        Log.d("logevent","type:"+type+"    option:"+option)
         EventUtils.addEvent("author-授权弹窗",type,option)
     }
 

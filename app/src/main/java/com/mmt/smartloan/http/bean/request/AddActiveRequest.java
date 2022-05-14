@@ -1,5 +1,6 @@
 package com.mmt.smartloan.http.bean.request;
 
+import com.appsflyer.AppsFlyerLib;
 import com.mmt.smartloan.BuildConfig;
 import com.mmt.smartloan.MyApplication;
 import com.mmt.smartloan.config.AccountInfo;
@@ -12,8 +13,8 @@ import com.mmt.smartloan.utils.ConfigUtil;
  **/
 public class AddActiveRequest extends BaseRequest{
     private String installReferce = AccountInfo.INSTANCE.getInstallReferce();
-    private String installReferceClickTime;
-    private String installStartTime;
+    private String installReferceClickTime="";
+    private String installStartTime="";
     private int adrVersion = ConfigUtil.getAdrVersion(MyApplication.Companion.getAppContext());
     private String appVersion = ConfigUtil.getAppVersion(MyApplication.Companion.getAppContext());
     private String androidId = ConfigUtil.getAndroidID(MyApplication.Companion.getAppContext());
@@ -21,23 +22,32 @@ public class AddActiveRequest extends BaseRequest{
     private String packageName = BuildConfig.APPLICATION_ID;
     private String appName="SmartLoan";
     private String mac = ConfigUtil.getNewMac();
-    private String serial;
+    private String serial="";
     private long releaseDate;
-    private String deviceName;
-    private String phoneBrand;
+    private String deviceName="";
+    private String phoneBrand="";
     private boolean isRooted;
-    private String sysVersion;
+    private String sysVersion="";
 
-    private String language;
-    private String localeDisplayLanguage;
-    private String localeIso3Country;
-    private String localeIso3Language;
-    private String timeZone;
-    private String timeZoneId;
+    private String language="";
+    private String localeDisplayLanguage="";
+    private String localeIso3Country="";
+    private String localeIso3Language=ConfigUtil.getLocaleIso3Language(MyApplication.Companion.getAppContext(),true);
+    private String timeZone="";
+    private String timeZoneId="";
     private int apiLevel;
-    private String networkOperatorName;
+    private String networkOperatorName="";
     private boolean isUsingProxyPort;
-    private String afId;
+    private String afId = AppsFlyerLib.getInstance().getAppsFlyerUID(MyApplication.Companion.getAppContext());
+    private String channelId = "SmartLoan";
+
+    public String getInstallReferce() {
+        return installReferce;
+    }
+
+    public void setInstallReferce(String installReferce) {
+        this.installReferce = installReferce;
+    }
 
     public String getInstallReferceClickTime() {
         return installReferceClickTime;
@@ -53,6 +63,46 @@ public class AddActiveRequest extends BaseRequest{
 
     public void setInstallStartTime(String installStartTime) {
         this.installStartTime = installStartTime;
+    }
+
+    public int getAdrVersion() {
+        return adrVersion;
+    }
+
+    public void setAdrVersion(int adrVersion) {
+        this.adrVersion = adrVersion;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion;
+    }
+
+    public String getAndroidId() {
+        return androidId;
+    }
+
+    public void setAndroidId(String androidId) {
+        this.androidId = androidId;
+    }
+
+    public String getImei() {
+        return imei;
+    }
+
+    public void setImei(String imei) {
+        this.imei = imei;
+    }
+
+    public String getPackageName() {
+        return packageName;
+    }
+
+    public void setPackageName(String packageName) {
+        this.packageName = packageName;
     }
 
     public String getAppName() {
@@ -103,12 +153,12 @@ public class AddActiveRequest extends BaseRequest{
         this.phoneBrand = phoneBrand;
     }
 
-    public boolean getIsRooted() {
+    public boolean isRooted() {
         return isRooted;
     }
 
-    public void setIsRooted(boolean isRooted) {
-        this.isRooted = isRooted;
+    public void setRooted(boolean rooted) {
+        isRooted = rooted;
     }
 
     public String getSysVersion() {
@@ -183,12 +233,12 @@ public class AddActiveRequest extends BaseRequest{
         this.networkOperatorName = networkOperatorName;
     }
 
-    public boolean getIsUsingProxyPort() {
+    public boolean isUsingProxyPort() {
         return isUsingProxyPort;
     }
 
-    public void setIsUsingProxyPort(boolean isUsingProxyPort) {
-        this.isUsingProxyPort = isUsingProxyPort;
+    public void setUsingProxyPort(boolean usingProxyPort) {
+        isUsingProxyPort = usingProxyPort;
     }
 
     public String getAfId() {
@@ -197,5 +247,13 @@ public class AddActiveRequest extends BaseRequest{
 
     public void setAfId(String afId) {
         this.afId = afId;
+    }
+
+    public String getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(String channelId) {
+        this.channelId = channelId;
     }
 }

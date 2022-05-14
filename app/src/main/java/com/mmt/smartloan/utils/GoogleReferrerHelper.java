@@ -110,10 +110,22 @@ public class GoogleReferrerHelper {
         boolean isFirst = (boolean) SPUtils.get(MyApplication.Companion.getAppContext(), AccountInfo.IS_FIRST_KEY, true);
         if(!isFirst)return;
         AddActiveRequest request = new AddActiveRequest();
-        request.setInstallReferceClickTime(new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(
-                new Date(AccountInfo.INSTANCE.getReferrerClickTime())));
-        request.setInstallReferceClickTime(new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(
-                new Date(AccountInfo.INSTANCE.getInstallStartTime())));
+
+        if(AccountInfo.INSTANCE.getReferrerClickTime() <1){
+            request.setInstallReferceClickTime("");
+        }else{
+            request.setInstallReferceClickTime(new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(
+                    new Date(AccountInfo.INSTANCE.getReferrerClickTime())));
+        }
+
+
+        if(AccountInfo.INSTANCE.getInstallStartTime() <1){
+            request.setInstallStartTime("");
+        }else {
+            request.setInstallStartTime(
+                    new SimpleDateFormat("yyyy-MM-dd kk:mm:ss").format(
+                            new Date(AccountInfo.INSTANCE.getInstallStartTime())));
+        }
 
         if (ActivityCompat.checkSelfPermission(MyApplication.Companion.getAppContext(), Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             request.setSerial("");
@@ -125,10 +137,10 @@ public class GoogleReferrerHelper {
         request.setReleaseDate(Build.TIME);
         request.setDeviceName(Build.DEVICE);
         request.setPhoneBrand(Build.BRAND);
-        request.setIsRooted(ConfigUtil.isRoot());
+        request.setRooted(ConfigUtil.isRoot());
         request.setSysVersion(Build.VERSION.RELEASE);
         request.setLanguage(ConfigUtil.getLanguageCode(MyApplication.Companion.getAppContext()));
-        request.setLocaleDisplayLanguage(ConfigUtil.getLanguageCode(MyApplication.Companion.getAppContext()));
+        request.setLocaleDisplayLanguage(ConfigUtil.getDisplayLanguage(MyApplication.Companion.getAppContext()));
 
         request.setLocaleIso3Country(Locale.getDefault().getDisplayCountry());
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

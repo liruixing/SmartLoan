@@ -8,6 +8,7 @@ import android.text.Spannable
 import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -129,12 +130,9 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         },index3,index4, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
         tv_privacy?.setText(sp)
         cb_privacy?.isChecked = true
-        cb_privacy?.isEnabled = false
 
         cb_privacy?.setOnCheckedChangeListener { compoundButton, b ->
-            if(b){
-                addEvent("click","agreement")
-            }
+            addEvent("click","agreement")
         }
 
         im_back?.setOnClickListener {
@@ -151,7 +149,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
                 var input = et_code?.text.toString()
 
                 if (s!!.length > 6) {
-                    s.delete(LoginActivity.MAX_PHONE_LEN, s.length)
+                    s.delete(6, s.length)
                 }
                 if(!TextUtil.isVercode(input) && input.length > 0){
                     val str = input.subSequence(0,input.length-1)
@@ -164,6 +162,10 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         })
 
         tv_getCode?.setOnClickListener{
+            val txt = tv_getCode?.text.toString()
+            if(txt != getString(R.string.register_get_code) ){
+                return@setOnClickListener
+            }
             val type =
             if(isExisted){
                 1
@@ -195,9 +197,9 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
                 AFUtil.up(this@RegisterActivity, "toast_logincode_"+resources.getString(R.string.login_agree_privacy_toast))
                 return@setOnClickListener
             }
-
             AFUtil.up(this@RegisterActivity, "logincode_confirm")
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
+            addEvent("leave", "otpCode")
             addEvent("click","confirm")
         }
 
@@ -262,6 +264,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         addEvent("exit","")
     }
     private fun addEvent(type:String,option:String){
+        Log.d("logevent","type:"+type+"    option:"+option)
         EventUtils.addEvent("loginCode-验证码页面",type,option)
     }
 }

@@ -20,12 +20,13 @@ public class EventLogRequest extends BaseRequest{
     private String afId = AppsFlyerLib.getInstance().getAppsFlyerUID(MyApplication.Companion.getAppContext());
     private String androidId = ConfigUtil.getAndroidID(MyApplication.Companion.getAppContext());
     private String imei  = ConfigUtil.getIMEI(MyApplication.Companion.getAppContext());
-    private String phoneNumber;
-    private String userId;
+    private String phoneNumber="";
+    private String userId="";
     private List<EventLogItem> eventList;
     private String merchantID = "000";
     private String country = ConfigUtil.getCountryCode(MyApplication.Companion.getAppContext());
     private String utm_source = AccountInfo.INSTANCE.getInstallReferce();
+    private String channelId = "SmartLoan";
 
     public String getPhoneNumber() {
         return phoneNumber;

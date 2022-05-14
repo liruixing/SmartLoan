@@ -58,10 +58,9 @@ class MyApplication : Application() {
         }
 
         override fun onActivityStopped(activity: Activity?) {
-            //判断是否上传日志，并停止收集日志
-            AccountInfo.isCollectLog = false
             //复制需要上传的日志信息
             AccountInfo.uploadList = TextUtil.deepCopy(AccountInfo.logList)
+            AccountInfo.logList.clear()
             if(!AccountInfo.uploadList.isEmpty()){
                 val request = EventLogRequest()
                 request.userId = SPUtils.get(applicationContext,AccountInfo.USERID_KEY, "") as String?
@@ -73,6 +72,7 @@ class MyApplication : Application() {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe {
                             {
+                                AccountInfo.uploadList.clear()
                                 Log.d(TAG,"uploadLog success")
                             }
                             {

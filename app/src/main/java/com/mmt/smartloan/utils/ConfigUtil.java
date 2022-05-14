@@ -75,11 +75,15 @@ public class ConfigUtil {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
                 return "00000000000000";
             }
-            result = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+            String imei = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+            if(imei == null){
+                return result;
+            }else{
+                return imei;
+            }
         } catch (Exception e) {
             return "00000000000000";
         }
-        return result;
     }
 
     /**
@@ -136,14 +140,20 @@ public class ConfigUtil {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             try {
                 locale = context.getResources().getConfiguration().getLocales().get(0);
-                result = locale.getLanguage();
             } catch (Exception e) {
-
             }
+        }
+        result = locale.getLanguage();
+        if(result == null){
+            result = "";
         }
         return result;
     }
 
+    public static String getDisplayLanguage(Context context) {
+        Locale locale=context.getResources().getConfiguration().locale;
+        return locale.getDisplayLanguage();
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public static String getCurrentTimeZone() {
@@ -198,7 +208,7 @@ public class ConfigUtil {
     public static String getOperators(Context context) {
         TelephonyManager tm = (TelephonyManager) context
                 .getSystemService(Context.TELEPHONY_SERVICE);
-        String operator = null;
+        String operator = "";
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return "";
         }
@@ -247,5 +257,24 @@ public class ConfigUtil {
         return result;
     }
 
+
+    public static String getLocaleIso3Language(Context context,boolean isISO3){
+        String language = "en";
+        Locale local =Locale.getDefault();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            try {
+                local=context.getResources().getConfiguration().getLocales().get(0);
+            }catch (Exception e){
+
+            }
+        }
+        if (isISO3){
+            language = local.getISO3Language();
+        }  else {
+            language = local.getLanguage();
+        }
+        if(language == null)return "";
+        return language;
+    }
 
 }

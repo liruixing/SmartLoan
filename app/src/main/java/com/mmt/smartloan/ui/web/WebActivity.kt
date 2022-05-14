@@ -589,6 +589,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             }
             if(webView != null && shouldOver){
                 webView?.loadUrl(APIStore.H5_URL)
+                return true
             }else if (null != webView && webView?.canGoBack()!!) {
                 webView?.goBack()
                 return true
@@ -598,6 +599,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     }
 
     private fun addEvent(type:String,option:String){
+        Log.d("logevent","type:"+type+"    option:"+option)
         EventUtils.addEvent("author-授权弹窗",type,option)
     }
 

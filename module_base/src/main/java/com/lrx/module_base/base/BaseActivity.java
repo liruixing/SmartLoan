@@ -44,7 +44,6 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseMVPV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        DialogFactory.getInstance().release();
         AppManagerUtil.getInstance().removeActivity(this);
         if (mUnbinder != Unbinder.EMPTY) {
             mUnbinder.unbind();

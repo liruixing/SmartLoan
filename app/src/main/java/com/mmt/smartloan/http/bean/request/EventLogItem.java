@@ -9,10 +9,10 @@ import com.mmt.smartloan.utils.LocationUtils;
  * description：
  **/
 public class EventLogItem extends BaseData {
-    private String eventOption;
-    private String eventType;
-    private String orderNo;
-    private String pageName;
+    private String eventOption="";
+    private String eventType="";
+    private String orderNo="";
+    private String pageName="";
     private String time = System.currentTimeMillis()+"";
     private String longitude = LocationUtils.INSTANCE.getLongitude();
     private String latitude = LocationUtils.INSTANCE.getLatitude();

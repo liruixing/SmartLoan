@@ -6,6 +6,7 @@ import android.content.Intent
 import android.text.Spannable
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -111,9 +112,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         tv_privacy?.setText(sp)
 
         cb_privacy?.setOnCheckedChangeListener { compoundButton, b ->
-            if(b){
-                addEvent("click","agreement")
-            }
+            addEvent("click","agreement")
         }
 
         im_back?.setOnClickListener {
@@ -141,17 +140,15 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
                 AFUtil.up(this@LoginActivity, "toast_loginphone_"+resources.getString(R.string.login_agree_privacy_toast))
                 return@setOnClickListener
             }
+
+            et_phone?.nextFocusUpId
+
+            addEvent("leave","phoneNum")
             addEvent("click","next")
             AFUtil.up(this@LoginActivity, "loginPhone_sendOtp")
             AFUtil.up(this@LoginActivity, "loginPhone_next")
             mPresenter.existsByMobile(et_phone?.text.toString())
         }
-
-        et_phone?.postDelayed({
-            et_phone?.requestFocus()
-            val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            manager.showSoftInput(et_phone, 0)
-        }, 300)
 
         et_phone?.setOnFocusChangeListener { view, b ->
             if(b){
@@ -166,6 +163,15 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
         addEvent("open","")
         AFUtil.up(this, "loginPhone_open")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        et_phone?.postDelayed({
+            et_phone?.requestFocus()
+            val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            manager.showSoftInput(et_phone, 0)
+        }, 300)
     }
 
     override fun onPause() {
@@ -192,6 +198,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
     }
 
     private fun addEvent(type:String,option:String){
+        Log.d("logevent","type:"+type+"    option:"+option)
         EventUtils.addEvent("loginPhone-手机号页面",type,option)
     }
 
