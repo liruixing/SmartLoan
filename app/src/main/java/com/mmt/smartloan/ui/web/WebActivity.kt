@@ -28,6 +28,7 @@ import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.lrx.module_base.utils.SPUtils
 import com.lrx.module_ui.View.dialog.DialogFactory
+import com.mmt.smartloan.MyApplication
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
 import com.mmt.smartloan.http.APIManager
@@ -601,6 +602,11 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     private fun addEvent(type:String,option:String){
         Log.d("logevent","type:"+type+"    option:"+option)
         EventUtils.addEvent("author-授权弹窗",type,option)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
     }
 
 }

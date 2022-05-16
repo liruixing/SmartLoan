@@ -18,7 +18,7 @@ import com.mmt.smartloan.R;
 import java.lang.reflect.Field;
 
 public class ClearEditText extends AppCompatEditText implements View.OnFocusChangeListener, TextWatcher {
-    private Drawable clearIcon;
+//    private Drawable clearIcon;
     protected int maxLength = -1;
     protected TextWatcher textWatcher;
     private OnClickClearListener mOnClickClearListener;
@@ -66,12 +66,12 @@ public class ClearEditText extends AppCompatEditText implements View.OnFocusChan
         if (maxLength < 1) {
             maxLength = -1;
         }
-        clearIcon = getCompoundDrawables()[2];
-        if (clearIcon == null) {
-            clearIcon = ContextCompat.getDrawable(getContext(), R.mipmap.ic_delete_menu);
-
-        }
-        clearIcon.setBounds(0, 0, (int)getResources().getDimension(R.dimen.px_40), (int)getResources().getDimension(R.dimen.px_40));
+//        clearIcon = getCompoundDrawables()[2];
+//        if (clearIcon == null) {
+//            clearIcon = ContextCompat.getDrawable(getContext(), R.mipmap.ic_delete_menu);
+//
+//        }
+//        clearIcon.setBounds(0, 0, (int)getResources().getDimension(R.dimen.px_40), (int)getResources().getDimension(R.dimen.px_40));
         setOnFocusChangeListener(this);
         addTextChangedListener(this);
     }
@@ -111,8 +111,8 @@ public class ClearEditText extends AppCompatEditText implements View.OnFocusChan
     }
 
     private void isVisibleClean(boolean isVisible) {
-        Drawable[] drawables = getCompoundDrawables();
-        setCompoundDrawables(drawables[0], drawables[1], isVisible ? clearIcon : null, drawables[3]);
+//        Drawable[] drawables = getCompoundDrawables();
+//        setCompoundDrawables(drawables[0], drawables[1], isVisible ? clearIcon : null, drawables[3]);
     }
 
     @Override

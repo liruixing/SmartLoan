@@ -42,6 +42,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     if(it.isEnableAutoLogin){
                         submit(str,it.code,true,isExisted)
                     }else{
+                        hideLoading()
                         mView.gotoRegister(isExisted,it)
                     }
                 },
@@ -50,7 +51,6 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     hideLoading()
                 },
                 {
-                    hideLoading()
                 }
             )
 
@@ -61,7 +61,6 @@ class LoginPresenter:BasePresenter<ILoginView>() {
     fun submit(phone: String, code: String,isAuto:Boolean,isExisted:Boolean) {
         val str = phone.replace(" ","")
         AFUtil.up(mView.activity, "login_automatic")
-        showLoading()
         if(isExisted){//登录
             AFUtil.up(mView.activity, "loginPhone_login")
             val request = LoginRequest()

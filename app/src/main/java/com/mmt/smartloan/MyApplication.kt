@@ -51,39 +51,10 @@ class MyApplication : Application() {
 
     private var mLifecycleCallback:ActivityLifecycleCallbacks = object :ActivityLifecycleCallbacks{
         override fun onActivityCreated(activity: Activity?, savedInstanceState: Bundle?) {
-            //开启收集日志
-            AccountInfo.isCollectLog = true
-            AccountInfo.logList.clear()
             LocationUtils.getLocation(this@MyApplication)
         }
 
         override fun onActivityStopped(activity: Activity?) {
-            //复制需要上传的日志信息
-            AccountInfo.uploadList = TextUtil.deepCopy(AccountInfo.logList)
-            AccountInfo.logList.clear()
-            if(!AccountInfo.uploadList.isEmpty()){
-                val request = EventLogRequest()
-                request.userId = SPUtils.get(applicationContext,AccountInfo.USERID_KEY, "") as String?
-                request.phoneNumber = SPUtils.get(applicationContext,AccountInfo.PHONE_KEY, "") as String?
-                request.eventList = AccountInfo.uploadList
-
-                APIManager.getInstance().uploadLog(request)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe {
-                            {
-                                AccountInfo.uploadList.clear()
-                                Log.d(TAG,"uploadLog success")
-                            }
-                            {
-                                AccountInfo.uploadList.clear()
-                                Log.d(TAG,it.msg)
-                            }
-                            {
-                                AccountInfo.uploadList.clear()
-                            }
-                        }
-            }
         }
 
         override fun onActivityPaused(activity: Activity?) {
@@ -102,6 +73,8 @@ class MyApplication : Application() {
 
 
     }
+
+
 
     override fun onCreate() {
         super.onCreate()

@@ -14,6 +14,7 @@ import butterknife.BindView
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.lrx.module_base.utils.SPUtils
+import com.mmt.smartloan.MyApplication
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
 import com.mmt.smartloan.http.APIManager
@@ -125,7 +126,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
             val isEmpty = et_phone?.text.isNullOrBlank()
             val isTen = et_phone?.getPhone()?.length!! >9
 
-            if(isEmpty || !isTen){
+            if(isEmpty){
                 ToastUtils.showToast(R.string.login_empty_phone_toast)
                 AFUtil.up(this@LoginActivity, "toast_loginphone_"+resources.getString(R.string.login_empty_phone_toast))
                 return@setOnClickListener
@@ -179,6 +180,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         super.onPause()
         addEvent("exit","")
         AFUtil.up(this, "loginPhone_back")
+        MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
     }
     override fun gotoRegister(
         existed: Boolean,

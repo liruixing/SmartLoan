@@ -16,6 +16,7 @@ import butterknife.BindView
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.lrx.module_base.utils.SPUtils
+import com.mmt.smartloan.MyApplication
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
 import com.mmt.smartloan.http.APIManager
@@ -261,6 +262,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
     override fun onPause() {
         super.onPause()
         addEvent("exit","")
+        MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
     }
     private fun addEvent(type:String,option:String){
         Log.d("logevent","type:"+type+"    option:"+option)
