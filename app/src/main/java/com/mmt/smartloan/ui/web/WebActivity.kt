@@ -601,7 +601,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
 
     private fun addEvent(type:String,option:String){
         Log.d("logevent","type:"+type+"    option:"+option)
-        EventUtils.addEvent("author-授权弹窗",type,option)
+        EventUtils.addEvent("author",type,option)
     }
 
     override fun onPause() {

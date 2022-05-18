@@ -8,6 +8,7 @@ import com.mmt.smartloan.utils.ConfigUtil;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * create by Dennis
@@ -24,9 +25,17 @@ public class EventLogRequest extends BaseRequest{
     private String userId="";
     private List<EventLogItem> eventList;
     private String merchantID = "000";
-    private String country = ConfigUtil.getCountryCode(MyApplication.Companion.getAppContext());
+    private String country = Locale.getDefault().getDisplayCountry();
     private String utm_source = AccountInfo.INSTANCE.getInstallReferce();
-    private String channelId = "SmartLoan";
+    private String channelID = "SmartLoan";
+
+    public String getChannelID() {
+        return channelID;
+    }
+
+    public void setChannelID(String channelID) {
+        this.channelID = channelID;
+    }
 
     public String getPhoneNumber() {
         return phoneNumber;

@@ -32,7 +32,7 @@ public class AddActiveRequest extends BaseRequest{
     private String language="";
     private String localeDisplayLanguage="";
     private String localeIso3Country="";
-    private String localeIso3Language=ConfigUtil.getLocaleIso3Language(MyApplication.Companion.getAppContext(),true);
+    private String localeIso3Language=ConfigUtil.getLocaleIso3Language(MyApplication.Companion.getAppContext(),false);
     private String timeZone="";
     private String timeZoneId="";
     private int apiLevel;

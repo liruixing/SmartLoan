@@ -202,7 +202,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
     private fun addEvent(type:String,option:String){
         Log.d("logevent","type:"+type+"    option:"+option)
-        EventUtils.addEvent("loginPhone-手机号页面",type,option)
+        EventUtils.addEvent("loginPhone",type,option)
     }
 
 }

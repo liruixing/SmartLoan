@@ -70,10 +70,10 @@ public class ConfigUtil {
     }
 
     public static String getIMEI(Context context) {
-        String result = "00000000000000";
+        String result = "000000000000000";
         try {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
-                return "00000000000000";
+                return "000000000000000";
             }
             String imei = ((TelephonyManager) context.getSystemService(TELEPHONY_SERVICE)).getDeviceId();
             if(imei == null){
@@ -82,7 +82,7 @@ public class ConfigUtil {
                 return imei;
             }
         } catch (Exception e) {
-            return "00000000000000";
+            return "000000000000000";
         }
     }
 

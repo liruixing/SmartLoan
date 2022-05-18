@@ -73,17 +73,17 @@ Aprobación Del"
                 android:gravity="center"
                 android:text="@string/register_get_code"
                 />
+
             <ImageView
                 android:id="@+id/im_clear"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/px_10"
                 android:layout_toLeftOf="@id/tv_getCode"
                 android:padding="@dimen/px_15"
-                android:layout_marginRight="@dimen/px_10"
                 android:src="@mipmap/ic_delete_menu"
                 android:visibility="gone"
-                tools:visibility="visible"
-                />
+                tools:visibility="visible" />
             <EditText
                 android:id="@+id/et_code"
                 android:layout_width="match_parent"

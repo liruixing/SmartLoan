@@ -136,14 +136,14 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         im_back?.setOnClickListener {
             finish()
         }
-        im_clear?.setOnClickListener { et_code?.setText("") }
+//        im_clear?.setOnClickListener { et_code?.setText("") }
         et_code?.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if(et_code?.text.isNullOrBlank()){
-                    im_clear?.visibility = View.GONE
-                }else{
-                    im_clear?.visibility = View.VISIBLE
-                }
+//                if(et_code?.text.isNullOrBlank()){
+//                    im_clear?.visibility = View.GONE
+//                }else{
+//                    im_clear?.visibility = View.VISIBLE
+//                }
                 var input = et_code?.text.toString()
 
                 if (s!!.length > 6) {
@@ -266,6 +266,6 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
     }
     private fun addEvent(type:String,option:String){
         Log.d("logevent","type:"+type+"    option:"+option)
-        EventUtils.addEvent("loginCode-验证码页面",type,option)
+        EventUtils.addEvent("loginCode",type,option)
     }
 }
