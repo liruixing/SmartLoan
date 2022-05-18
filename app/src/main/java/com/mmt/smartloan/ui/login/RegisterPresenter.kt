@@ -2,6 +2,7 @@ package com.mmt.smartloan.ui.login
 
 import com.lrx.module_base.base.BasePresenter
 import com.lrx.module_base.manager.AppManagerUtil
+import com.mmt.smartloan.R
 import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.bean.request.LoginRequest
 import com.mmt.smartloan.http.bean.request.RegisterRequest
@@ -60,7 +61,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             {
                                 AFUtil.up(mView.activity, "logincode_Loginfailed")
                                 hideLoading()
-                                ToastUtils.showToast(it.message)
+                                ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                             },
                             {
                                 hideLoading()
@@ -81,7 +82,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             {
                                 AFUtil.up(mView.activity, "logincode_Regfailed")
                                 hideLoading()
-                                ToastUtils.showToast(it.message)
+                                ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                             },
                             {
                                 hideLoading()

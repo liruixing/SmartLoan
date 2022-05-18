@@ -365,12 +365,14 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                         AFUtil.up(this@WebActivity, "author_file_yes")
                     } else if (it.shouldShowRequestPermissionRationale) {
 //                        用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
+                        mUploadMessage?.onReceiveValue(null);
                         addEvent("click","file_no")
                         addEvent("click","camera_no")
                         AFUtil.up(this@WebActivity, "author_media_no")
                         AFUtil.up(this@WebActivity, "author_file_no")
                     } else {
                         //用户选中了  不再询问
+                        mUploadMessage?.onReceiveValue(null);
                         addEvent("click","file_completeNo")
                         addEvent("click","camera_completeNo")
                         AFUtil.up(this@WebActivity, "author_media_no")
@@ -405,11 +407,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             value.put("file", base64)
             injector?.sendMessage(value.toString(), "webViewFaceImg", injector?.faceId ?: "")
         } else if (requestCode == REQUEST_CODE_LIVENESS && !LivenessResult.isSuccess()) {
-
             var value = JSONObject()
             value.put("errorMsg", LivenessResult.getErrorMsg())
             injector?.sendMessage(value.toString(), "webViewFaceImg", injector?.faceId ?: "", false)
-            Toast.makeText(this, LivenessResult.getErrorCode(), Toast.LENGTH_SHORT).show()
         }
         //选择联系人
         if (requestCode == REQUEST_CODE_CONTACT && resultCode == Activity.RESULT_OK) {
@@ -477,6 +477,8 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 Log.e("Error!", "Error while opening image file" + e.getLocalizedMessage());
             }
 
+        }else if(requestCode == REQUEST_CODE_PICTURE && resultCode != Activity.RESULT_OK){
+            mUploadMessage?.onReceiveValue(null)
         }
 
     }
@@ -546,7 +548,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         super.showUpdateDialog(vi, forcedUpdate)
         DialogFactory.getInstance().getUpdateDialog(this,!vi.isForcedUpdate,
             { v: View? ->
-                if (vi.isForcedUpdate) {
+                if (!vi.isForcedUpdate) {
                     DialogFactory.getInstance().dismiss()
                 }
                 var link = vi.link
@@ -559,12 +561,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 startActivity(intent)
                 AFUtil.up(this@WebActivity, "updateConfirm_yes")
             }, { v: View? ->
-            DialogFactory.getInstance().dismiss()
+                DialogFactory.getInstance().dismiss()
                 AFUtil.up(this@WebActivity, "updateConfirm_no")
-            if (vi.isForcedUpdate) {
-                AppManagerUtil.getInstance().finishAllActivity()
-            }
-        }
+        },vi.isForcedUpdate
         )
     }
 

@@ -63,6 +63,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
     private var phone:String? = null
     private var isExisted:Boolean = false
     private var bean:VerCode? = null
+    var isClickLeave:Boolean = false
 
 
     companion object{
@@ -197,6 +198,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
                 AFUtil.up(this@RegisterActivity, "toast_logincode_"+resources.getString(R.string.login_agree_privacy_toast))
                 return@setOnClickListener
             }
+            isClickLeave = true
             AFUtil.up(this@RegisterActivity, "logincode_confirm")
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
             addEvent("leave", "otpCode")
@@ -239,7 +241,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         super.registerSuccess(registerInfo)
         SPUtils.put(this,AccountInfo.TOKEN_KEY,registerInfo?.token?:"")
         SPUtils.put(this,AccountInfo.USERID_KEY,registerInfo?.userId?:"")
-        SPUtils.put(this,AccountInfo.PHONE_KEY,phone)
+        SPUtils.put(this,AccountInfo.PHONE_KEY,phone?.replace(" ",""))
         APIManager.getInstance().updateToken(registerInfo?.token?:"")
         WebActivity.start(this)
         AppManagerUtil.getInstance().finishAllButNot(WebActivity::class.java)
@@ -261,11 +263,19 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
     override fun onPause() {
         super.onPause()
+        if(!isClickLeave){
+            addEvent("leave", "otpCode")
+        }
+    }
+
+    override fun onDestroy() {
         addEvent("exit","")
         MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
+        super.onDestroy()
     }
+
     private fun addEvent(type:String,option:String){
-        Log.d("logevent","type:"+type+"    option:"+option)
+        Log.d("logevent","loginCode "+"type:"+type+"    option:"+option)
         EventUtils.addEvent("loginCode",type,option)
     }
 }

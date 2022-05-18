@@ -54,6 +54,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
     @BindView(R.id.tv_privacy)
     var tv_privacy: TextView? = null
 
+    var isClickLeave:Boolean = false
 
 
     companion object{
@@ -144,7 +145,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
             }
 
             et_phone?.nextFocusUpId
-
+            isClickLeave = true
             addEvent("leave","phoneNum")
             addEvent("click","next")
             AFUtil.up(this@LoginActivity, "loginPhone_sendOtp")
@@ -178,10 +179,18 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
     override fun onPause() {
         super.onPause()
+        if(!isClickLeave){
+            addEvent("leave","phoneNum")
+        }
+    }
+
+    override fun onDestroy() {
         addEvent("exit","")
         AFUtil.up(this, "loginPhone_back")
         MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
+        super.onDestroy()
     }
+
     override fun gotoRegister(
         existed: Boolean,
         bean: VerCode
@@ -194,14 +203,14 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         super.loginRegisterSuccess(registerInfo)
         SPUtils.put(this, AccountInfo.TOKEN_KEY,registerInfo?.token?:"")
         SPUtils.put(this, AccountInfo.USERID_KEY,registerInfo?.userId?:"")
-        SPUtils.put(this, AccountInfo.PHONE_KEY,et_phone?.getPhone())
+        SPUtils.put(this, AccountInfo.PHONE_KEY,et_phone?.getPhone().toString().replace(" ",""))
         APIManager.getInstance().updateToken(registerInfo?.token?:"")
         WebActivity.start(this)
         AppManagerUtil.getInstance().finishAllButNot(WebActivity::class.java)
     }
 
     private fun addEvent(type:String,option:String){
-        Log.d("logevent","type:"+type+"    option:"+option)
+        Log.d("logevent","loginPhone "+"type:"+type+"    option:"+option)
         EventUtils.addEvent("loginPhone",type,option)
     }
 

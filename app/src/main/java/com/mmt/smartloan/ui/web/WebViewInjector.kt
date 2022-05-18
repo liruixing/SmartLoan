@@ -104,29 +104,10 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         item.eventType = data.eventType
         item.pageName = data.pageName
         item.orderNo = data.orderNo
-
         AccountInfo.logList.add(item)
 
-        AccountInfo.uploadList = TextUtil.deepCopy(AccountInfo.logList)
-        AccountInfo.logList.clear()
-
         if (AccountInfo.isUpload) {
-            val request = EventLogRequest()
-            request.userId = SPUtils.get(context, AccountInfo.USERID_KEY, "") as String?
-            request.phoneNumber = SPUtils.get(context, AccountInfo.PHONE_KEY, "") as String?
-            request.eventList = AccountInfo.uploadList
-
-            APIManager.getInstance().uploadLog(request)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
-                        {
-                            AccountInfo.uploadList.clear()
-                        }
-                        {
-                            AccountInfo.uploadList.clear()
-                        }
-                    }
+            MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
         }
     }
 
@@ -254,7 +235,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
             if (intent.resolveActivity(ctx.packageManager) == null) { //有浏览器
                 ctx.startActivity(intent)
             } else { //天哪，这还是智能手机吗？
-
+                ToastUtils.showToast(ctx.resources.getString(R.string.uninstall_google_market))
             }
         }
     }

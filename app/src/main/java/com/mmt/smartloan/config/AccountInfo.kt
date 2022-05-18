@@ -65,18 +65,18 @@ object AccountInfo {
             APIManager.getInstance().uploadLog(request)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe {
+                    .subscribe (
                         {
                             Log.d("TAG","uploadLog success")
-                        }
+                        },
                         {
                             uploadList.clear()
-                            Log.d("TAG",it.msg)
-                        }
+                            Log.d("TAG",it.message)
+                        },
                         {
                             uploadList.clear()
                         }
-                    }
+                    )
         }
     }
 

@@ -1,6 +1,7 @@
 package com.mmt.smartloan.ui.login
 
 import com.lrx.module_base.base.BasePresenter
+import com.mmt.smartloan.R
 import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.bean.request.LoginRequest
 import com.mmt.smartloan.http.bean.request.RegisterRequest
@@ -47,7 +48,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     }
                 },
                 {
-                    ToastUtils.showToast(it.message)
+                    ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                     hideLoading()
                 },
                 {
@@ -76,7 +77,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     },
                     {
                         hideLoading()
-                        ToastUtils.showToast(it.message)
+                        ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                         AFUtil.up(mView.activity, "login_automatic_fail")
                     },
                     {
@@ -96,7 +97,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     },
                     {
                         hideLoading()
-                        ToastUtils.showToast(it.message)
+                        ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                     },
                     {
                         hideLoading()

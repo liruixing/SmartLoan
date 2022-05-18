@@ -10,6 +10,8 @@
     <string name="login_empty_phone_notright">Formato erróneo de número telefónico</string>
     <string name="login_agree_privacy_toast">no aceptar el término y condiciones</string>
     <string name="permission_complete_no_toast">Autoriza los permisos antes de entregar solicitud</string>
+    <string name="network_error_toast">anomalía de la red</string>
+    <string name="uninstall_google_market">No está instalado PlayStore o navegador</string>
 
     <string name="register_get_code">Conseguir</string>
     <string name="register_code_hint">Código de verificación</string>

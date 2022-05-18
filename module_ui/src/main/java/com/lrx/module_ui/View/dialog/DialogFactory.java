@@ -102,13 +102,20 @@ public class DialogFactory {
      */
     public Dialog getUpdateDialog(Context context,boolean canCancel,
                                            View.OnClickListener configClick,
-                                           View.OnClickListener cancelClick) {
+                                           View.OnClickListener cancelClick,boolean isForceUpdate) {
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_update_smloan, null);
         Button btnConfig = view.findViewById(R.id.btn_confirm);
         ImageView imCancel = view.findViewById(R.id.im_cancel);
+        if(isForceUpdate){
+            imCancel.setVisibility(View.INVISIBLE);
+            imCancel.setOnClickListener(null);
+        }else{
+            imCancel.setVisibility(View.VISIBLE);
+            imCancel.setOnClickListener(cancelClick);
+        }
 
         btnConfig.setOnClickListener(configClick);
-        imCancel.setOnClickListener(cancelClick);
+
         return initDialog(context, R.style.style_dialog, view, canCancel, false);
     }
     /**
