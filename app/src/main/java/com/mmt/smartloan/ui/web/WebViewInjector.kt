@@ -119,6 +119,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
     fun timeSDK(bean: JSBean,js: String) {
 //        调起第三方资料收集六合一
         mRawDataSDK.setJsonString(js)
+        Log.d("TimeSDK","JS 触发timesdk")
     }
 
     fun selectContact(bean: JSBean) {

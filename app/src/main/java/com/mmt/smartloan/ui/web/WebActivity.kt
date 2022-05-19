@@ -115,9 +115,11 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         mRawDataSDK = RawDataSDK(this, object : SDKCallback {
             override fun onSuccess(file: File?, md5: String?, orderno: String?, isSubmit: Boolean, json: String?) {
                 up6In1(file, md5, orderno, isSubmit, 0, json);
+                Log.d("TimeSDK","onSuccess      file="+file?.absoluteFile+"  orderno="+orderno+"  isSubmit="+isSubmit+"  json="+json)
             }
 
             override fun onFail(msg: String?, orderno: String?, isSubmit: Boolean, json: String?) {
+                Log.d("TimeSDK","onFail  orderno="+orderno+"  isSubmit="+isSubmit+"  json="+json)
                 if (isSubmit) {//  判断回调h5
                     toJsResult(false, json, isSubmit);// 原生回调h5
                 }
