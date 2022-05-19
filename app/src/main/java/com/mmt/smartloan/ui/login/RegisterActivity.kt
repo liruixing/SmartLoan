@@ -201,21 +201,12 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
             isClickLeave = true
             AFUtil.up(this@RegisterActivity, "logincode_confirm")
             mPresenter.submit(phone!!,et_code?.text.toString(),false,isExisted)
-            addEvent("leave", "otpCode")
             addEvent("click","confirm")
         }
 
         tv_getCode?.setOnFocusChangeListener { view, b ->
-            if(b){
-                addEvent("input","otpCode")
-                AFUtil.up(this, "logincode_codeInput")
-            }else{
-                addEvent("leave", "otpCode")
-            }
         }
 
-        addEvent("open","")
-        AFUtil.up(this, "logincode_open")
 
     }
 
@@ -261,16 +252,22 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
         timer.start()
     }
 
+    override fun onResume() {
+        super.onResume()
+        AFUtil.up(this, "logincode_open")
+        addEvent("open","")
+        addEvent("input","otpCode")
+        AFUtil.up(this, "logincode_codeInput")
+    }
+
     override fun onPause() {
         super.onPause()
-        if(!isClickLeave){
-            addEvent("leave", "otpCode")
-        }
+        addEvent("leave", "otpCode")
+        addEvent("exit","")
+        MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
     }
 
     override fun onDestroy() {
-        addEvent("exit","")
-        MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
         super.onDestroy()
     }
 

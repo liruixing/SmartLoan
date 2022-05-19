@@ -39,8 +39,10 @@ public interface APIStore {
 
     String BASE_URL = "http://8.134.38.88:3003/api/";
     String H5_URL = "http://8.134.38.88:3003/";
+    String HOME_URL = "http://8.134.38.88:3003/#/";
     String PROVICY_URL = H5_URL+"#/provicy";
     String CONDITION_URL = H5_URL+"#/termsCondition";
+
 
 
     @GET("security/existsByMobile")

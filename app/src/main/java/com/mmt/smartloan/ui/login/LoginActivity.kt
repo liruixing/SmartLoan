@@ -146,7 +146,6 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
             et_phone?.nextFocusUpId
             isClickLeave = true
-            addEvent("leave","phoneNum")
             addEvent("click","next")
             AFUtil.up(this@LoginActivity, "loginPhone_sendOtp")
             AFUtil.up(this@LoginActivity, "loginPhone_next")
@@ -154,22 +153,18 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         }
 
         et_phone?.setOnFocusChangeListener { view, b ->
-            if(b){
-                addEvent("input","phoneNum")
-                AFUtil.up(this@LoginActivity, "loginPhone_phoneInput")
-            }else{
-                addEvent("leave","phoneNum")
-            }
         }
 
         val isopen = intent.extras?.getBoolean(IS_OPEN_KEY)?:true
 
-        addEvent("open","")
-        AFUtil.up(this, "loginPhone_open")
     }
 
     override fun onResume() {
         super.onResume()
+        AFUtil.up(this, "loginPhone_open")
+        addEvent("open","")
+        addEvent("input","phoneNum")
+        AFUtil.up(this@LoginActivity, "loginPhone_phoneInput")
         et_phone?.postDelayed({
             et_phone?.requestFocus()
             val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -179,15 +174,13 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
     override fun onPause() {
         super.onPause()
-        if(!isClickLeave){
-            addEvent("leave","phoneNum")
-        }
-    }
-
-    override fun onDestroy() {
+        addEvent("leave","phoneNum")
         addEvent("exit","")
         AFUtil.up(this, "loginPhone_back")
         MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
+    }
+
+    override fun onDestroy() {
         super.onDestroy()
     }
 

@@ -352,17 +352,25 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
 
     private fun goTakePicture() {
         //检查权限，调起原生相机，执行拍照，回传的图片尺寸限制 大于768，小于2048，图片大小限制 小于1m
+        val hasfile = PermissionUtils.hasPermission(this, PermissionUtils.WRITE_EXTERNAL_STORAGE)
+
+        val hasCamera = PermissionUtils.hasPermission(this, PermissionUtils.CAMERA)
+
+
         rxPermission!!.requestEachCombined(*PermissionUtils.STORAGE_AND_CAMERA)
                 .subscribe {
                     if (it.granted) {
                         //权限通过
                         val intent = createCameraIntent()
                         startActivityForResult(intent, REQUEST_CODE_PICTURE)
-
-                        addEvent("click","file_yes")
-                        addEvent("click","camera_yes")
-                        AFUtil.up(this@WebActivity, "author_media_yes")
-                        AFUtil.up(this@WebActivity, "author_file_yes")
+                        if(!hasfile){
+                            addEvent("click","file_yes")
+                            AFUtil.up(this@WebActivity, "author_file_yes")
+                        }
+                        if(!hasCamera){
+                            addEvent("click","camera_yes")
+                            AFUtil.up(this@WebActivity, "author_media_yes")
+                        }
                     } else if (it.shouldShowRequestPermissionRationale) {
 //                        用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
                         mUploadMessage?.onReceiveValue(null);
@@ -488,13 +496,18 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         if (requestCode == RawDataSDK.RequestCode && mRawDataSDK != null) {
             mRawDataSDK?.onRequestPermission();
         }
+        val hasPhone = PermissionUtils.hasPermission(this,PermissionUtils.READ_PHONE_STATE)
+        val hasLocation = PermissionUtils.hasPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)
+        val hasSMS = PermissionUtils.hasPermission(this,PermissionUtils.READ_SMS)
 
         permissions.forEachIndexed { index, s ->
             if(PermissionUtils.READ_PHONE_STATE == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    addEvent("click","phone_yes")
-                    AFUtil.up(this@WebActivity, "author_phone_yes")
+                    if(!hasPhone){
+                        addEvent("click","phone_yes")
+                        AFUtil.up(this@WebActivity, "author_phone_yes")
+                    }
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_PHONE_STATE)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_PHONE_STATE)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
@@ -509,8 +522,10 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.ACCESS_FINE_LOCATION == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    addEvent("click","location_yes")
-                    AFUtil.up(this@WebActivity, "author_locate_yes")
+                    if(!hasLocation){
+                        addEvent("click","location_yes")
+                        AFUtil.up(this@WebActivity, "author_locate_yes")
+                    }
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.ACCESS_FINE_LOCATION)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
@@ -525,8 +540,10 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.READ_SMS == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    addEvent("click","message_yes")
-                    AFUtil.up(this@WebActivity, "author_message_yes")
+                    if(!hasSMS){
+                        addEvent("click","message_yes")
+                        AFUtil.up(this@WebActivity, "author_message_yes")
+                    }
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_SMS)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_SMS)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
@@ -590,6 +607,8 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(webView != null && shouldOver){
                 webView?.loadUrl(APIStore.H5_URL)
                 return true
+            }else if(url == APIStore.HOME_URL){
+                return super.onKeyDown(keyCode, event)
             }else if (null != webView && webView?.canGoBack()!!) {
                 webView?.goBack()
                 return true
