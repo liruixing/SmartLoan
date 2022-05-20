@@ -33,7 +33,9 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                         },
                         {
                             hideLoading()
-                            ToastUtils.showToast(it.message)
+                            if(!it.message.isNullOrEmpty()){
+                                ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                            }
                         },
                         {
                             hideLoading()
@@ -61,7 +63,9 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             {
                                 AFUtil.up(mView.activity, "logincode_Loginfailed")
                                 hideLoading()
-                                ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                if(!it.message.isNullOrEmpty()){
+                                    ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                }
                             },
                             {
                                 hideLoading()
@@ -82,7 +86,9 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             {
                                 AFUtil.up(mView.activity, "logincode_Regfailed")
                                 hideLoading()
-                                ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                if(!it.message.isNullOrEmpty()){
+                                    ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                }
                             },
                             {
                                 hideLoading()

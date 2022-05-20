@@ -36,6 +36,8 @@ import retrofit2.http.Query;
 public interface APIStore {
 
     int SUCCESS_CODE = 0;
+    String NO_NETWORK = "Failed to connect to";
+    String NETWORK_TIME_OUT = "timeout";
 
     String BASE_URL = "http://8.134.38.88:3003/api/";
     String H5_URL = "http://8.134.38.88:3003/";

@@ -610,6 +610,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 webView?.loadUrl(APIStore.H5_URL)
                 return true
             }else if(url == APIStore.HOME_URL){
+                SPUtils.put(this@WebActivity, AccountInfo.TOKEN_KEY, "")
+                SPUtils.put(this@WebActivity, AccountInfo.PHONE_KEY, "")
+                SPUtils.put(this@WebActivity, AccountInfo.USERID_KEY, "")
                 return super.onKeyDown(keyCode, event)
             }else if (null != webView && webView?.canGoBack()!!) {
                 webView?.goBack()

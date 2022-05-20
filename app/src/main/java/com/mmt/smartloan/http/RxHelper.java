@@ -5,7 +5,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.mmt.smartloan.http.bean.SException;
 import com.mmt.smartloan.http.bean.response.BaseResponse;
+import com.mmt.smartloan.utils.ToastUtils;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
@@ -36,7 +38,8 @@ public class RxHelper {
                         }
                         return Observable.just(baseResponse.getData());
                     } else if (baseResponse != null && !TextUtils.isEmpty(baseResponse.getMsg())) {
-                        return Observable.error(new Exception(baseResponse.getMsg()));
+                        ToastUtils.showToast(baseResponse.getMsg());
+                        return Observable.error(new Exception(""));
                     } else {
                         return Observable.error(new Exception("unknown error"));
                     }

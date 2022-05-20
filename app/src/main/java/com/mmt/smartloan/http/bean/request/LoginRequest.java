@@ -22,7 +22,7 @@ public class LoginRequest extends BaseRequest{
     private boolean isRooted = ConfigUtil.isRoot();
     private String timeZone = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT);
     private String timeZoneId = TimeZone.getDefault().getID();
-    private String appName = "smartloan";
+    private String appName = "SmartLoan";
     private boolean verified;
     private int adrVersion = ConfigUtil.getAdrVersion(MyApplication.Companion.getAppContext());
     private String androidId = ConfigUtil.getAndroidID(MyApplication.Companion.getAppContext());

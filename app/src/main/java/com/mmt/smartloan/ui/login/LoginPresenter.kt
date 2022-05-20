@@ -48,7 +48,9 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     }
                 },
                 {
-                    ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                    if(!it.message.isNullOrEmpty()){
+                        ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                    }
                     hideLoading()
                 },
                 {
@@ -77,7 +79,9 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     },
                     {
                         hideLoading()
-                        ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                        if(!it.message.isNullOrEmpty()){
+                            ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                        }
                         AFUtil.up(mView.activity, "login_automatic_fail")
                     },
                     {
@@ -97,7 +101,9 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     },
                     {
                         hideLoading()
-                        ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                        if(!it.message.isNullOrEmpty()){
+                            ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                        }
                     },
                     {
                         hideLoading()
