@@ -30,6 +30,8 @@ object AccountInfo {
     var referrerClickTime:Long = 0L
     var installStartTime:Long = 0L
 
+    var time_s = 3*1000
+    var lastUploadTime = 0L
 
     const val TOKEN_KEY = "token_key"
     const val PHONE_KEY = "phone_key"
@@ -53,10 +55,12 @@ object AccountInfo {
 
 
     fun uploadLog(context: Context){
+        if(System.currentTimeMillis() - lastUploadTime < time_s)return//3s 内不处理上传
         //复制需要上传的日志信息
         uploadList = TextUtil.deepCopy(logList)
         logList.clear()
         if(!uploadList.isEmpty()){
+            lastUploadTime = System.currentTimeMillis()
             val request = EventLogRequest()
             request.userId = SPUtils.get(context,USERID_KEY, "") as String?
             request.phoneNumber = SPUtils.get(context,PHONE_KEY, "") as String?

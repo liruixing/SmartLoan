@@ -84,7 +84,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         const val URL_KEY = "url_key"
         const val REQUEST_CODE_LIVENESS = 1000
         const val REQUEST_CODE_CONTACT = 1001
-        const val REQUEST_CODE_PICTURE = 1001
+        const val REQUEST_CODE_PICTURE = 1002
 
         fun start(context: Context, url: String? = null) {
             val intent = Intent(context, WebActivity::class.java)
@@ -302,7 +302,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             override fun onShowFileChooser(webView: WebView?, filePath: ValueCallback<Array<Uri>>?, fileChooserParams: FileChooserParams?): Boolean {
                 //调起onShowFileChooser方法后，filePathCallback必须要回调，有数据回调数据，没数据回调null
                 //检查权限，调起原生相机，执行拍照，回传的图片尺寸限制 大于768，小于2048，图片大小限制 小于1m
-                mUploadMessage?.onReceiveValue(null);
                 mUploadMessage = filePath;
                 Log.e("FileCooserParams => ", filePath.toString());
                 goTakePicture()
@@ -336,20 +335,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         })
         webView?.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         webView?.loadUrl(url ?: APIStore.H5_URL)
-    }
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File? {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "JPEG_" + timeStamp + "_"
-        val storageDir: File = Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",  /* suffix */
-                storageDir /* directory */
-        )
     }
 
     private fun goTakePicture() {
@@ -501,6 +486,8 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         val hasPhone = PermissionUtils.hasPermission(this,PermissionUtils.READ_PHONE_STATE)
         val hasLocation = PermissionUtils.hasPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)
         val hasSMS = PermissionUtils.hasPermission(this,PermissionUtils.READ_SMS)
+        val hasContact = PermissionUtils.hasPermission(this,PermissionUtils.READ_CONTACTS)
+        val hasFile = PermissionUtils.hasPermission(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)
 
         permissions.forEachIndexed { index, s ->
             if(PermissionUtils.READ_PHONE_STATE == s && grantResults.size > index){
@@ -556,8 +543,44 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                     AFUtil.up(this@WebActivity, "author_message_no")
                 }
             }
-        }
 
+            if(PermissionUtils.READ_CONTACTS == s && grantResults.size > index){
+                val grant = grantResults[index]
+                if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
+                    if(!hasContact){
+                        addEvent("click","contact_yes")
+                        AFUtil.up(this@WebActivity, "author_contact_yes")
+                    }
+                }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_CONTACTS)
+                    && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_CONTACTS)==PackageManager.PERMISSION_DENIED
+                ){//权限拒绝并不再询问
+                    addEvent("click","contact_completeNo")
+                    AFUtil.up(this@WebActivity, "author_contact_no")
+                }else{
+                    addEvent("click","message_no")
+                    AFUtil.up(this@WebActivity, "author_contact_no")
+                }
+            }
+
+            if(PermissionUtils.WRITE_EXTERNAL_STORAGE == s && grantResults.size > index){
+                val grant = grantResults[index]
+                if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
+                    if(!hasFile){
+                        addEvent("click","file_yes")
+                        AFUtil.up(this@WebActivity, "author_file_yes")
+                    }
+                }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)
+                    && ActivityCompat.checkSelfPermission(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED
+                ){//权限拒绝并不再询问
+                    addEvent("click","file_completeNo")
+                    AFUtil.up(this@WebActivity, "author_file_no")
+                }else{
+                    addEvent("click","file_no")
+                    AFUtil.up(this@WebActivity, "author_file_no")
+                }
+            }
+
+        }
     }
 
     override fun showUpdateDialog(

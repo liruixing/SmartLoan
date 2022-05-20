@@ -104,9 +104,10 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         item.eventType = data.eventType
         item.pageName = data.pageName
         item.orderNo = data.orderNo
+
         AccountInfo.logList.add(item)
 
-        if (AccountInfo.isUpload) {
+        if (data.isUpload) {
             MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
         }
     }
@@ -133,7 +134,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                 .subscribe {
                     if (it.granted) {
                         if(needToEvent){
-                            addEvent("click","ontact_yes")
+                            addEvent("click","contact_yes")
                             AFUtil.up(context, "author_contact_yes")
                         }
                         isSelectContact = data.isSelectContact
@@ -166,8 +167,10 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         rxPermissions.requestEach(PermissionUtils.CAMERA)
                 .subscribe {
                     if (it.granted) {//请求权限
-                        addEvent("click","camera_yes")
-                        AFUtil.up(context, "author_media_yes")
+                        if(needToEvent){
+                            addEvent("click","camera_yes")
+                            AFUtil.up(context, "author_media_yes")
+                        }
                         val intent = Intent(context, LivenessActivity::class.java)
                         context.startActivityForResult(intent, WebActivity.REQUEST_CODE_LIVENESS)
                     }else if(it.shouldShowRequestPermissionRationale){

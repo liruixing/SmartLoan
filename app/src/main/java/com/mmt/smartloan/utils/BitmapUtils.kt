@@ -53,15 +53,16 @@ object BitmapUtils {
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun decodeBitmap(bitmap: Bitmap, maxW:Int, maxH:Int, maxSize:Int):Bitmap{
+        var result = bitmap
         if(compareBitmap(bitmap, maxW, maxH, maxSize)){
             val w = bitmap.width
             val h = bitmap.height
             if(w>maxW && h<=maxH){//需要压缩，以长度为标准
                 val realH = h*((maxW/w).toDouble())
-                zoomImage(bitmap, maxW.toDouble(),realH.toDouble())
+                result = zoomImage(bitmap, maxW.toDouble(),realH.toDouble())
             }else if(w<=maxW && h>maxH){//需要压缩，以高度为标准
                 val realW = w*((maxH/h).toDouble())
-                zoomImage(bitmap, realW,maxH.toDouble())
+                result = zoomImage(bitmap, realW,maxH.toDouble())
             }else if(w>maxW && h>maxH){//需要压缩，取最小标准
                 val wr:Double = maxW/w.toDouble()
                 val hr:Double = maxH/h.toDouble()
@@ -72,9 +73,9 @@ object BitmapUtils {
                 }
                 val realW = w*rate
                 val realH = h*rate
-                zoomImage(bitmap, realW.toDouble(),realH.toDouble())
+                result = zoomImage(bitmap, realW.toDouble(),realH.toDouble())
             }
-            return bitmap
+            return result
         }else{
             while (!compareBitmap(bitmap,maxW, maxH, maxSize)){
                 //压缩
@@ -82,20 +83,33 @@ object BitmapUtils {
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 90, baos)
                 val byte = baos.toByteArray()
                 val ins = ByteArrayInputStream(byte)
-                val bm = BitmapFactory.decodeStream(ins)
+                result = BitmapFactory.decodeStream(ins)
                 ins.close()
                 baos.close()
             }
-            val w = bitmap.width
-            val h = bitmap.height
+
+            val w = result.width
+            val h = result.height
             if(w>maxW && h<=maxH){//需要压缩，以长度为标准
-                val realH = h*maxW/w
-                zoomImage(bitmap, maxW.toDouble(),realH.toDouble())
+                val realH = h*((maxW/w).toDouble())
+                result = zoomImage(result, maxW.toDouble(),realH.toDouble())
             }else if(w<=maxW && h>maxH){//需要压缩，以高度为标准
-                val realW = w*maxH/h
-                zoomImage(bitmap, realW.toDouble(),maxH.toDouble())
+                val realW = w*((maxH/h).toDouble())
+                result = zoomImage(result, realW,maxH.toDouble())
+            }else if(w>maxW && h>maxH){//需要压缩，取最小标准
+                val wr:Double = maxW/w.toDouble()
+                val hr:Double = maxH/h.toDouble()
+                var rate = if(wr>hr){
+                    hr
+                }else{
+                    wr
+                }
+                val realW = w*rate
+                val realH = h*rate
+                result = zoomImage(result, realW.toDouble(),realH.toDouble())
             }
-            return bitmap
+
+            return result
         }
     }
 
