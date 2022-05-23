@@ -79,6 +79,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
     override fun init() {
         super.init()
         ScreenUtil.setStatusTranslucent(this)
+        APIManager.getInstance().updateToken("")
         cb_privacy?.isChecked = true
 
         val sp = TextUtil.setLoginCorlor(getString(R.string.login_privacy_hint),

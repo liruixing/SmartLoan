@@ -63,6 +63,8 @@ public class APIManager {
         headerBean = new HeaderBean();
         if(!TextUtils.isEmpty(token)){
             headerBean.setToken(token);
+        }else{
+            headerBean.setToken(null);
         }
         headerBean.setAfid(AppsFlyerLib.getInstance().getAppsFlyerUID(MyApplication.Companion.getAppContext()));
 

@@ -270,7 +270,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                 getVersionName(bean)
             }
             "toLogin" -> {
-                toLogin(bean)
+//                toLogin(bean)
             }
             "logout" -> {
                 logout(bean)

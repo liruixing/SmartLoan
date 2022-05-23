@@ -80,6 +80,8 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     private var size: Long = 0
     var rxPermission: RxPermissions? = null
 
+    var isFirstTime:Boolean = true
+
     companion object {
         const val URL_KEY = "url_key"
         const val REQUEST_CODE_LIVENESS = 1000
@@ -315,6 +317,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                     favicon: Bitmap?
             ) {
                 Log.i("TAG", "onPageStarted: $url")
+                if(isFirstTime){
+                    showLoadingView()
+                }
                 super.onPageStarted(view, url, favicon)
             }
 
@@ -330,6 +335,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             override fun onPageFinished(webView: WebView?, s: String?) {
                 Log.i("TAG", "onPageFinished: $s")
                 heidenLoadingView()
+                if(isFirstTime){
+                    isFirstTime = false
+                }
                 super.onPageFinished(webView, s)
             }
         })
@@ -557,7 +565,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                     addEvent("click","contact_completeNo")
                     AFUtil.up(this@WebActivity, "author_contact_no")
                 }else{
-                    addEvent("click","message_no")
+                    addEvent("click","contact_no")
                     AFUtil.up(this@WebActivity, "author_contact_no")
                 }
             }
