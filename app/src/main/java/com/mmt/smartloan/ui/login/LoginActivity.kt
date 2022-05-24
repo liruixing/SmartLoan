@@ -150,6 +150,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
             addEvent("click","next")
             AFUtil.up(this@LoginActivity, "loginPhone_sendOtp")
             AFUtil.up(this@LoginActivity, "loginPhone_next")
+            showLoadingView()
             mPresenter.existsByMobile(et_phone?.text.toString())
         }
 
@@ -189,8 +190,8 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         existed: Boolean,
         bean: VerCode
     ) {
-        super.gotoRegister(existed,bean)
         RegisterActivity.start(this@LoginActivity, et_phone?.text.toString()?:"",existed,bean)
+        heidenLoadingView()
     }
 
     override fun loginRegisterSuccess(registerInfo: RegisterInfo?) {
@@ -201,6 +202,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
         APIManager.getInstance().updateToken(registerInfo?.token?:"")
         WebActivity.start(this)
         AppManagerUtil.getInstance().finishAllButNot(WebActivity::class.java)
+        heidenLoadingView()
     }
 
     private fun addEvent(type:String,option:String){

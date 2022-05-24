@@ -22,7 +22,6 @@ class LoginPresenter:BasePresenter<ILoginView>() {
 
         val str = phone.replace(" ","")
         var isExisted = false
-        showLoading()
         APIManager.getInstance().existsByMobile(str)
             .flatMap {
                 isExisted = it.isExisted
@@ -43,7 +42,6 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     if(it.isEnableAutoLogin){
                         submit(str,it.code,true,isExisted)
                     }else{
-                        hideLoading()
                         mView.gotoRegister(isExisted,it)
                     }
                 },
@@ -78,11 +76,11 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                         mView.loginRegisterSuccess(it)
                     },
                     {
-                        hideLoading()
                         if(!it.message.isNullOrEmpty()){
                             ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
                         }
                         AFUtil.up(mView.activity, "login_automatic_fail")
+                        hideLoading()
                     },
                     {
                         hideLoading()

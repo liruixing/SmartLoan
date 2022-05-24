@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.lrx.module_base.R;
 import com.lrx.module_base.utils.SPUtils;
+import com.lrx.module_ui.View.LoadingDialogHelper;
 import com.lrx.module_ui.View.dialog.DialogFactory;
 import com.siberiadante.titlelayoutlib.TitleBarLayout;
 import com.lrx.module_base.manager.AppManagerUtil;
@@ -52,19 +53,12 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseMVPV
 
     @Override
     public void showLoadingView() {
-        if (!LoadingDialogManager.getInstance().isLoadingShow()) {
-            LoadingDialogManager.getInstance().showLoading(this);
-        } else {
-            LoadingDialogManager.getInstance().dismissLoading();
-            LoadingDialogManager.getInstance().showLoading(this);
-        }
+        LoadingDialogHelper.INSTANCE.showAnimationDialog(this);
     }
 
     @Override
     public void heidenLoadingView() {
-        if (LoadingDialogManager.getInstance().isLoadingShow()) {
-            LoadingDialogManager.getInstance().dismissLoading();
-        }
+        LoadingDialogHelper.INSTANCE.dismiss();
     }
 
     @Override

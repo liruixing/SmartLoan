@@ -191,7 +191,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                                 } else {
                                     if (isSubmit) {
                                         if (n < 3) {
-                                            up6In1(file, md5, orderno, isSubmit, num, json)
+                                            up6In1(file, md5, orderno, isSubmit, n, json)
                                         } else {
                                             toJsResult(false, json, isSubmit)
                                         }
@@ -203,7 +203,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                             {
                                 if (isSubmit) {
                                     if (n < 3) {
-                                        up6In1(file, md5, orderno, isSubmit, num, json)
+                                        up6In1(file, md5, orderno, isSubmit, n, json)
                                     } else {
                                         toJsResult(false, json, isSubmit)
                                     }
@@ -491,25 +491,19 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         if (requestCode == RawDataSDK.RequestCode && mRawDataSDK != null) {
             mRawDataSDK?.onRequestPermission();
         }
-        val hasPhone = PermissionUtils.hasPermission(this,PermissionUtils.READ_PHONE_STATE)
-        val hasLocation = PermissionUtils.hasPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)
-        val hasSMS = PermissionUtils.hasPermission(this,PermissionUtils.READ_SMS)
-        val hasContact = PermissionUtils.hasPermission(this,PermissionUtils.READ_CONTACTS)
-        val hasFile = PermissionUtils.hasPermission(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)
 
         permissions.forEachIndexed { index, s ->
             if(PermissionUtils.READ_PHONE_STATE == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    if(!hasPhone){
-                        addEvent("click","phone_yes")
-                        AFUtil.up(this@WebActivity, "author_phone_yes")
-                    }
+                    addEvent("click","phone_yes")
+                    AFUtil.up(this@WebActivity, "author_phone_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_PHONE_STATE)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_PHONE_STATE)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","phone_completeNo")
                     AFUtil.up(this@WebActivity, "author_phone_no")
+                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                 }else{
                     addEvent("click","phone_no")
                     AFUtil.up(this@WebActivity, "author_phone_no")
@@ -519,15 +513,14 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.ACCESS_FINE_LOCATION == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    if(!hasLocation){
-                        addEvent("click","location_yes")
-                        AFUtil.up(this@WebActivity, "author_locate_yes")
-                    }
+                    addEvent("click","location_yes")
+                    AFUtil.up(this@WebActivity, "author_locate_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.ACCESS_FINE_LOCATION)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","location_completeNo")
                     AFUtil.up(this@WebActivity, "author_locate_no")
+                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                 }else{
                     addEvent("click","location_no")
                     AFUtil.up(this@WebActivity, "author_locate_no")
@@ -537,15 +530,14 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.READ_SMS == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    if(!hasSMS){
-                        addEvent("click","message_yes")
-                        AFUtil.up(this@WebActivity, "author_message_yes")
-                    }
+                    addEvent("click","message_yes")
+                    AFUtil.up(this@WebActivity, "author_message_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_SMS)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_SMS)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","message_completeNo")
                     AFUtil.up(this@WebActivity, "author_message_no")
+                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                 }else{
                     addEvent("click","message_no")
                     AFUtil.up(this@WebActivity, "author_message_no")
@@ -555,15 +547,14 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.READ_CONTACTS == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    if(!hasContact){
-                        addEvent("click","contact_yes")
-                        AFUtil.up(this@WebActivity, "author_contact_yes")
-                    }
+                    addEvent("click","contact_yes")
+                    AFUtil.up(this@WebActivity, "author_contact_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.READ_CONTACTS)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.READ_CONTACTS)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","contact_completeNo")
                     AFUtil.up(this@WebActivity, "author_contact_no")
+                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                 }else{
                     addEvent("click","contact_no")
                     AFUtil.up(this@WebActivity, "author_contact_no")
@@ -573,15 +564,14 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(PermissionUtils.WRITE_EXTERNAL_STORAGE == s && grantResults.size > index){
                 val grant = grantResults[index]
                 if(grant ==  PackageManager.PERMISSION_GRANTED){//权限通过
-                    if(!hasFile){
-                        addEvent("click","file_yes")
-                        AFUtil.up(this@WebActivity, "author_file_yes")
-                    }
+                    addEvent("click","file_yes")
+                    AFUtil.up(this@WebActivity, "author_file_yes")
                 }else if(!ActivityCompat.shouldShowRequestPermissionRationale(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)
                     && ActivityCompat.checkSelfPermission(this,PermissionUtils.WRITE_EXTERNAL_STORAGE)==PackageManager.PERMISSION_DENIED
                 ){//权限拒绝并不再询问
                     addEvent("click","file_completeNo")
                     AFUtil.up(this@WebActivity, "author_file_no")
+                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
                 }else{
                     addEvent("click","file_no")
                     AFUtil.up(this@WebActivity, "author_file_no")
@@ -658,9 +648,15 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         EventUtils.addEvent("author",type,option)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onStop() {
+        super.onStop()
         MyApplication.getAppContext()?.let { AccountInfo.uploadLog(it) }
     }
 
+    override fun onDestroy() {
+        webView?.let { mPresenter.clearCache(this, it) }
+        heidenLoadingView()
+        super.onDestroy()
+
+    }
 }
