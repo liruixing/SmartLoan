@@ -16,6 +16,7 @@ import butterknife.BindView
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.lrx.module_base.utils.SPUtils
+import com.lrx.module_ui.View.LoadingDialogState
 import com.mmt.smartloan.MyApplication
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
@@ -162,10 +163,12 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
         tv_getCode?.setOnClickListener{
             if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
+            if(!LoadingDialogState.canClick())return@setOnClickListener
             val txt = tv_getCode?.text.toString()
             if(txt != getString(R.string.register_get_code) ){
                 return@setOnClickListener
             }
+
             val type =
             if(isExisted){
                 1
@@ -179,6 +182,7 @@ class RegisterActivity:BaseMVPActivity<IRegisterView,RegisterPresenter>(),IRegis
 
         btn_login?.setOnClickListener{
             if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
+            if(!LoadingDialogState.canClick())return@setOnClickListener
             val isAgree = cb_privacy?.isChecked?:false
             val isEmpty = et_code?.text.isNullOrBlank()
 

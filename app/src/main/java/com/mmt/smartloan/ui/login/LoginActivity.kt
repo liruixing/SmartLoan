@@ -14,6 +14,7 @@ import butterknife.BindView
 import com.lrx.module_base.base.BaseMVPActivity
 import com.lrx.module_base.manager.AppManagerUtil
 import com.lrx.module_base.utils.SPUtils
+import com.lrx.module_ui.View.LoadingDialogState
 import com.mmt.smartloan.MyApplication
 import com.mmt.smartloan.R
 import com.mmt.smartloan.config.AccountInfo
@@ -124,6 +125,7 @@ class LoginActivity:BaseMVPActivity<ILoginView,LoginPresenter>(),ILoginView {
 
         btn_login?.setOnClickListener{
             if(FastDoubleClickUtils.isFastDoubleClick(it))return@setOnClickListener
+            if(!LoadingDialogState.canClick())return@setOnClickListener
             val isAgree = cb_privacy?.isChecked?:false
             val isEmpty = et_phone?.text.isNullOrBlank()
             val isTen = et_phone?.getPhone()?.length!! >9

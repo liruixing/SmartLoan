@@ -49,6 +49,7 @@ public class LoadingDialogManager implements ILoadingDialogManager{
      */
     @Override
     public void dismissLoading() {
+        LoadingDialogState.INSTANCE.setTimelong(System.currentTimeMillis());
         if (dialog != null && dialog.isShowing()) {
             try {
                 dialog.dismiss();

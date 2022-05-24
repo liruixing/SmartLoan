@@ -53,12 +53,21 @@ public abstract class BaseActivity extends FragmentActivity implements IBaseMVPV
 
     @Override
     public void showLoadingView() {
-        LoadingDialogHelper.INSTANCE.showAnimationDialog(this);
+        if (!LoadingDialogManager.getInstance().isLoadingShow()) {
+            LoadingDialogManager.getInstance().showLoading(this);
+        } else {
+            LoadingDialogManager.getInstance().dismissLoading();
+            LoadingDialogManager.getInstance().showLoading(this);
+        }
+//        LoadingDialogHelper.INSTANCE.showAnimationDialog(this);
     }
 
     @Override
     public void heidenLoadingView() {
-        LoadingDialogHelper.INSTANCE.dismiss();
+        if (LoadingDialogManager.getInstance().isLoadingShow()) {
+            LoadingDialogManager.getInstance().dismissLoading();
+        }
+//        LoadingDialogHelper.INSTANCE.dismiss();
     }
 
     @Override
