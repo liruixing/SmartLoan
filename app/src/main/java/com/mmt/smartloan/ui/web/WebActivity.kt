@@ -630,7 +630,9 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             if(webView != null && shouldOver){
                 webView?.loadUrl(APIStore.H5_URL)
                 return true
-            }else if (null != webView && webView?.canGoBack()!!) {
+            }else if(url.equals(APIStore.HOME_URL)){
+                return super.onKeyDown(keyCode, event)
+            } else if (null != webView && webView?.canGoBack()!!) {
                 webView?.goBack()
                 return true
             }

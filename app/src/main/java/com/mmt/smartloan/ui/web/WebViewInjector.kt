@@ -151,7 +151,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                             addEvent("click","contact_completeNo")
                         }
                         AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
-                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
+//                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
     }
@@ -184,7 +184,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                             AFUtil.up(context, "author_media_no")
                         }
                         AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
-                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
+//                        ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
                     }
                 }
     }
