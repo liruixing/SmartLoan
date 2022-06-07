@@ -33,6 +33,11 @@ object PermissionUtils {
     )
 
 
+    val STORAGES = arrayOf(
+            WRITE_EXTERNAL_STORAGE,
+            READ_EXTERNAL_STORAGE
+    )
+
     fun hasPermission(context:Context,permission:String):Boolean{
         if (ActivityCompat.checkSelfPermission(
                 context,

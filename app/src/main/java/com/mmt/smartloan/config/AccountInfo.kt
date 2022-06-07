@@ -3,11 +3,14 @@ package com.mmt.smartloan.config
 import android.content.Context
 import android.util.Log
 import com.lrx.module_base.utils.SPUtils
+import com.mmt.smartloan.R
 import com.mmt.smartloan.http.APIManager
 import com.mmt.smartloan.http.bean.JSBean
 import com.mmt.smartloan.http.bean.request.EventLogItem
 import com.mmt.smartloan.http.bean.request.EventLogRequest
+import com.mmt.smartloan.utils.AFUtil
 import com.mmt.smartloan.utils.TextUtil
+import com.mmt.smartloan.utils.ToastUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
@@ -84,4 +87,33 @@ object AccountInfo {
         }
     }
 
+
+    val CONTACT_TOAST_KEY:String = "contact_toast_key"
+    val CAMERA_TOAST_KEY:String = "camera_toast_key"
+    val FILE_TOAST_KEY:String = "file_toast_key"
+    val PHONE_TOAST_KEY:String = "phone_toast_key"
+    val MESSAGE_TOAST_KEY:String = "message_toast_key"
+    val LOCATION_TOAST_KEY:String = "location_toast_key"
+
+
+    fun showToast(context:Context,key:String){
+        val hasShow:Boolean = SPUtils.get(context,key, false) as Boolean
+        if(!hasShow){
+            SPUtils.put(context,key,true)
+            AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
+            ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
+        }
+    }
+
+
+    fun showCameraOrFileToast(context:Context){
+        val hasShow1:Boolean = SPUtils.get(context, CAMERA_TOAST_KEY, false) as Boolean
+        val hasShow2:Boolean = SPUtils.get(context, FILE_TOAST_KEY, false) as Boolean
+        if(!hasShow1 || !hasShow2){
+            SPUtils.put(context,CAMERA_TOAST_KEY,true)
+            SPUtils.put(context,FILE_TOAST_KEY,true)
+            AFUtil.up(context, "toast_author_"+context.resources.getString(R.string.permission_complete_no_toast))
+            ToastUtils.showToast(context.resources.getString(R.string.permission_complete_no_toast))
+        }
+    }
 }

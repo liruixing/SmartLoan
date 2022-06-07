@@ -348,9 +348,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     private fun goTakePicture() {
         //检查权限，调起原生相机，执行拍照，回传的图片尺寸限制 大于768，小于2048，图片大小限制 小于1m
         val hasfile = PermissionUtils.hasPermission(this, PermissionUtils.WRITE_EXTERNAL_STORAGE)
-
         val hasCamera = PermissionUtils.hasPermission(this, PermissionUtils.CAMERA)
-
 
         rxPermission!!.requestEachCombined(*PermissionUtils.STORAGE_AND_CAMERA)
                 .subscribe {
@@ -369,19 +367,29 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                     } else if (it.shouldShowRequestPermissionRationale) {
 //                        用户拒绝了该权限，没有选中『不再询问』（Never ask again）,那么下次再次启动时，还会提示请求权限的对话框
                         mUploadMessage?.onReceiveValue(null);
-                        addEvent("click","file_no")
-                        addEvent("click","camera_no")
-                        AFUtil.up(this@WebActivity, "author_media_no")
-                        AFUtil.up(this@WebActivity, "author_file_no")
+                        if(!hasfile){
+                            addEvent("click","file_no")
+                            AFUtil.up(this@WebActivity, "author_file_no")
+                        }
+                        if(!hasCamera){
+                            addEvent("click","camera_no")
+                            AFUtil.up(this@WebActivity, "author_media_no")
+                        }
                     } else {
                         //用户选中了  不再询问
                         mUploadMessage?.onReceiveValue(null);
-                        addEvent("click","file_completeNo")
-                        addEvent("click","camera_completeNo")
-                        AFUtil.up(this@WebActivity, "author_media_no")
-                        AFUtil.up(this@WebActivity, "author_file_no")
-                        ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
-                        AFUtil.up(this@WebActivity, "toast_author_"+resources.getString(R.string.permission_complete_no_toast))
+
+//                        val hasShow1:Boolean = SPUtils.get(this@WebActivity, AccountInfo.CAMERA_TOAST_KEY, false) as Boolean
+//                        val hasShow2:Boolean = SPUtils.get(this@WebActivity, AccountInfo.FILE_TOAST_KEY, false) as Boolean
+                        if(!hasfile){
+                            addEvent("click","file_completeNo")
+                            AFUtil.up(this@WebActivity, "author_file_no")
+                        }
+                        if(!hasCamera){
+                            addEvent("click","camera_completeNo")
+                            AFUtil.up(this@WebActivity, "author_media_no")
+                        }
+                        AccountInfo.showCameraOrFileToast(this@WebActivity)
                     }
                 }
 
@@ -503,7 +511,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 ){//权限拒绝并不再询问
                     addEvent("click","phone_completeNo")
                     AFUtil.up(this@WebActivity, "author_phone_no")
-                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                    AccountInfo.showToast(this@WebActivity,AccountInfo.PHONE_TOAST_KEY)
                 }else{
                     addEvent("click","phone_no")
                     AFUtil.up(this@WebActivity, "author_phone_no")
@@ -520,7 +528,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 ){//权限拒绝并不再询问
                     addEvent("click","location_completeNo")
                     AFUtil.up(this@WebActivity, "author_locate_no")
-                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                    AccountInfo.showToast(this@WebActivity,AccountInfo.LOCATION_TOAST_KEY)
                 }else{
                     addEvent("click","location_no")
                     AFUtil.up(this@WebActivity, "author_locate_no")
@@ -537,7 +545,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 ){//权限拒绝并不再询问
                     addEvent("click","message_completeNo")
                     AFUtil.up(this@WebActivity, "author_message_no")
-                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                    AccountInfo.showToast(this@WebActivity,AccountInfo.MESSAGE_TOAST_KEY)
                 }else{
                     addEvent("click","message_no")
                     AFUtil.up(this@WebActivity, "author_message_no")
@@ -554,7 +562,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 ){//权限拒绝并不再询问
                     addEvent("click","contact_completeNo")
                     AFUtil.up(this@WebActivity, "author_contact_no")
-                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                    AccountInfo.showToast(this@WebActivity,AccountInfo.CONTACT_TOAST_KEY)
                 }else{
                     addEvent("click","contact_no")
                     AFUtil.up(this@WebActivity, "author_contact_no")
@@ -571,7 +579,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 ){//权限拒绝并不再询问
                     addEvent("click","file_completeNo")
                     AFUtil.up(this@WebActivity, "author_file_no")
-                    ToastUtils.showToast(resources.getString(R.string.permission_complete_no_toast))
+                    AccountInfo.showToast(this@WebActivity,AccountInfo.FILE_TOAST_KEY)
                 }else{
                     addEvent("click","file_no")
                     AFUtil.up(this@WebActivity, "author_file_no")
