@@ -32,6 +32,7 @@ import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.json.JSONObject
+import kotlin.math.log
 
 
 /**
@@ -85,14 +86,18 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
         value.put("token", token)
         sendMessage(value.toString(), bean.callback, bean.id)
     }
-
+    var logoutTime:Long = 0
     fun logout(bean: JSBean) {
-        SPUtils.put(context, AccountInfo.TOKEN_KEY, "")
-        SPUtils.put(context, AccountInfo.PHONE_KEY, "")
-        SPUtils.put(context, AccountInfo.USERID_KEY, "")
-        LoginActivity.start(context)
-        if (context is Activity)
-            context.finish()
+        val currrentTime = System.currentTimeMillis()
+        if(currrentTime - logoutTime >1000){
+            logoutTime = currrentTime
+            SPUtils.put(context, AccountInfo.TOKEN_KEY, "")
+            SPUtils.put(context, AccountInfo.PHONE_KEY, "")
+            SPUtils.put(context, AccountInfo.USERID_KEY, "")
+            LoginActivity.start(context)
+            if (context is Activity)
+                context.finish()
+        }
     }
 
     fun logEventByLocal(bean: JSBean) {

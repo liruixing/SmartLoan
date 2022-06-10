@@ -139,6 +139,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                 LoginActivity.start(this@WebActivity)
                 this.finish()
             }else{
+                APIManager.getInstance().updateToken(token)
                 mPresenter.checkupdate()
             }
             btn_float?.visibility = View.VISIBLE
@@ -379,8 +380,6 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
                         //用户选中了  不再询问
                         mUploadMessage?.onReceiveValue(null);
 
-//                        val hasShow1:Boolean = SPUtils.get(this@WebActivity, AccountInfo.CAMERA_TOAST_KEY, false) as Boolean
-//                        val hasShow2:Boolean = SPUtils.get(this@WebActivity, AccountInfo.FILE_TOAST_KEY, false) as Boolean
                         if(!hasfile){
                             addEvent("click","file_completeNo")
                             AFUtil.up(this@WebActivity, "author_file_no")
