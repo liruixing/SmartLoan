@@ -80,6 +80,6 @@ dependencies {
     implementation 'com.appsflyer:af-android-sdk:6.3.0'
     implementation 'com.android.installreferrer:installreferrer:2.2'
     implementation project(":liveness")
-    implementation 'com.tencent.bugly:crashreport:4.0.4'
+//    implementation 'com.tencent.bugly:crashreport:4.0.4'
 
 }

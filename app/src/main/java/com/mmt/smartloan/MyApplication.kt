@@ -5,27 +5,16 @@ import ai.advance.liveness.lib.Market
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
-import com.appsflyer.AFInAppEventType
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
-import com.lrx.module_base.utils.SPUtils
 import com.mmt.smartloan.config.AccountInfo
-import com.mmt.smartloan.http.APIManager
-import com.mmt.smartloan.http.bean.request.AddActiveRequest
-import com.mmt.smartloan.http.bean.request.EventLogRequest
-import com.mmt.smartloan.service.LogInfoService
 import com.mmt.smartloan.utils.GoogleReferrerHelper
 import com.mmt.smartloan.utils.LocationUtils
-import com.mmt.smartloan.utils.TextUtil
 import com.st.network.http.config.RxNetwork
 import com.st.network.http.config.RxNetworkConfig
-import com.tencent.bugly.crashreport.CrashReport
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -133,10 +122,7 @@ class MyApplication : Application() {
         val secretKey = "36181f76c174e848"
         val market = Market.Mexico
         GuardianLivenessDetectionSDK.init(this, accessKey, secretKey, market)
-        CrashReport.initCrashReport(getApplicationContext(), "14f0e6cfb1", false);
-//        //开启线程收集日志
-//        val intent = Intent(this,LogInfoService::class.java)
-//        startService(intent)
+//        CrashReport.initCrashReport(getApplicationContext(), "14f0e6cfb1", false);
 
     }
 
