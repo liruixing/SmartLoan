@@ -243,6 +243,7 @@ class WebViewInjector(var webView: WebView, val context: BaseActivity, val mRawD
                 ctx.startActivity(intent)
             } else { //天哪，这还是智能手机吗？
                 ToastUtils.showToast(ctx.resources.getString(R.string.uninstall_google_market))
+                AFUtil.up(ctx, "toast_author_"+ctx.resources.getString(R.string.uninstall_google_market))
             }
         }
     }
