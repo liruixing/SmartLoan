@@ -26,7 +26,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
         request.mobile = str
         request.type = type
         showLoading()
-        APIManager.getInstance().getCode(request)
+        APIManager.getInstance().getCode(request,"logincode")
                 .subscribe(
                         {
                             mView.getCodeSuccess(it)
@@ -35,6 +35,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                             hideLoading()
                             if(!it.message.isNullOrEmpty()){
                                 ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                AFUtil.up(mView.activity, "toast_logincode_"+mView.activity.resources.getString(R.string.network_error_toast))
                             }
                         },
                         {
@@ -54,7 +55,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
             request.verifyCode = code
             request.verified = !isAuto
             val map:MutableMap<String,Any> = BeanMapUtils.getObjectToMap(request)
-            APIManager.getInstance().login(map)
+            APIManager.getInstance().login(map,"logincode")
                     .subscribe(
                             {
                                 AFUtil.up(mView.activity, "logincode_LoginSuccess")
@@ -65,6 +66,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                                 hideLoading()
                                 if(!it.message.isNullOrEmpty()){
                                     ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                    AFUtil.up(mView.activity, "toast_logincode_"+mView.activity.resources.getString(R.string.network_error_toast))
                                 }
                             },
                             {
@@ -77,7 +79,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
             request.isVerified = !isAuto
             request.mobile = str
             request.verifyCode = code
-            APIManager.getInstance().register(request)
+            APIManager.getInstance().register(request,"logincode")
                     .subscribe(
                             {
                                 AFUtil.up(mView.activity, "logincode_RegSuccess")
@@ -88,6 +90,7 @@ class RegisterPresenter: BasePresenter<IRegisterView>() {
                                 hideLoading()
                                 if(!it.message.isNullOrEmpty()){
                                     ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                                    AFUtil.up(mView.activity, "toast_logincode_"+mView.activity.resources.getString(R.string.network_error_toast))
                                 }
                             },
                             {

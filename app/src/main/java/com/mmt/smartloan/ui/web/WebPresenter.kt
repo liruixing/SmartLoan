@@ -22,7 +22,7 @@ class WebPresenter: BasePresenter<IWebView>() {
     }
 
     fun checkupdate(){
-        APIManager.getInstance().getNewVersion(BuildConfig.APPLICATION_ID)
+        APIManager.getInstance().getNewVersion(BuildConfig.APPLICATION_ID,"webactivity")
             .subscribe(
                 {
                     try {

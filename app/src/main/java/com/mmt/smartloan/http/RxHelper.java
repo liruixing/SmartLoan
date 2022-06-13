@@ -5,8 +5,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 
+import com.mmt.smartloan.MyApplication;
 import com.mmt.smartloan.http.bean.SException;
 import com.mmt.smartloan.http.bean.response.BaseResponse;
+import com.mmt.smartloan.utils.AFUtil;
 import com.mmt.smartloan.utils.ToastUtils;
 
 import io.reactivex.Observable;
@@ -27,7 +29,7 @@ public class RxHelper {
     private RxHelper() {
     }
 
-    public static final <T> ObservableTransformer<BaseResponse<T>, T> handleResult() {
+    public static final <T> ObservableTransformer<BaseResponse<T>, T> handleResult(String pre) {
         return upstream -> upstream
                 .flatMap((Function<BaseResponse<T>, ObservableSource<T>>) baseResponse -> {
                     Log.d(TAG, "Http code: " + baseResponse.getCode());
@@ -39,6 +41,7 @@ public class RxHelper {
                         return Observable.just(baseResponse.getData());
                     } else if (baseResponse != null && !TextUtils.isEmpty(baseResponse.getMsg())) {
                         ToastUtils.showToast(baseResponse.getMsg());
+                        AFUtil.INSTANCE.up(MyApplication.Companion.getAppContext(), "toast_"+pre+"_"+baseResponse.getMsg());
                         return Observable.error(new Exception(""));
                     } else {
                         return Observable.error(new Exception("unknown error"));

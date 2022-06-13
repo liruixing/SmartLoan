@@ -184,7 +184,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
     private fun up6In1(file: File?, md5: String?, orderno: String?, isSubmit: Boolean, num: Int, json: String?) {
         var n = num + 1
         file?.let {
-            APIManager.getInstance().uploadZip6in1(file, "file", md5, orderno)
+            APIManager.getInstance().uploadZip6in1(file, "file", md5, orderno,"webactivity")
                     .subscribe(
                             {
                                 if (it) {

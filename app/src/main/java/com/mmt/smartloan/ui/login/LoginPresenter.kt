@@ -22,7 +22,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
 
         val str = phone.replace(" ","")
         var isExisted = false
-        APIManager.getInstance().existsByMobile(str)
+        APIManager.getInstance().existsByMobile(str,"loginphone")
             .flatMap {
                 isExisted = it.isExisted
                 val str = phone.replace(" ","")
@@ -35,7 +35,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                 val request = VerCodeRequest()
                 request.mobile = str
                 request.type = type
-                return@flatMap APIManager.getInstance().getCode(request)
+                return@flatMap APIManager.getInstance().getCode(request,"loginphone")
             }
             .subscribe(
                 {
@@ -48,6 +48,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                 {
                     if(!it.message.isNullOrEmpty()){
                         ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                        AFUtil.up(mView.activity, "toast_loginphone_"+mView.activity.resources.getString(R.string.network_error_toast))
                     }
                     hideLoading()
                 },
@@ -69,7 +70,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
             request.verifyCode = code
             request.verified = !isAuto
             val map:MutableMap<String,Any> = BeanMapUtils.getObjectToMap(request)
-            APIManager.getInstance().login(map)
+            APIManager.getInstance().login(map,"loginphone")
                 .subscribe(
                     {
                         AFUtil.up(mView.activity, "login_automatic_success")
@@ -78,6 +79,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                     {
                         if(!it.message.isNullOrEmpty()){
                             ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                            AFUtil.up(mView.activity, "toast_loginphone_"+mView.activity.resources.getString(R.string.network_error_toast))
                         }
                         AFUtil.up(mView.activity, "login_automatic_fail")
                         hideLoading()
@@ -92,7 +94,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
             request.isVerified = !isAuto
             request.mobile = str
             request.verifyCode = code
-            APIManager.getInstance().register(request)
+            APIManager.getInstance().register(request,"loginphone")
                 .subscribe(
                     {
                         mView.loginRegisterSuccess(it)
@@ -101,6 +103,7 @@ class LoginPresenter:BasePresenter<ILoginView>() {
                         hideLoading()
                         if(!it.message.isNullOrEmpty()){
                             ToastUtils.showToast(mView.activity.resources.getString(R.string.network_error_toast))
+                            AFUtil.up(mView.activity, "toast_loginphone_"+mView.activity.resources.getString(R.string.network_error_toast))
                         }
                     },
                     {

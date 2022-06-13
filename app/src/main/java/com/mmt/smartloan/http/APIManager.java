@@ -109,7 +109,7 @@ public class APIManager {
      * @return
      */
     public Observable<Boolean> uploadZip6in1(File file,String type,
-                                                        String md5,String orderno) {
+                                                        String md5,String orderno,String pre) {
         List<MultipartBody.Part> parts = new ArrayList<>();
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),
                 file);
@@ -117,33 +117,33 @@ public class APIManager {
                 file.getName(), requestFile);
         parts.add(filePart);
 
-        return uploadPromisePart(parts,md5,orderno );
+        return uploadPromisePart(parts,md5,orderno,pre);
     }
 
     public Observable<Boolean> uploadPromisePart(List<MultipartBody.Part> parts,
-                                        String md5,String orderno) {
-        return mAPIStore.zip6in1(parts, md5,orderno).compose(RxHelper.handleResult());
+                                        String md5,String orderno,String pre) {
+        return mAPIStore.zip6in1(parts, md5,orderno).compose(RxHelper.handleResult(pre));
     }
     //检查电话号码
-    public Observable<CheckMobile> existsByMobile(String phone){
+    public Observable<CheckMobile> existsByMobile(String phone,String pre){
         return mAPIStore.existsByMobile(phone)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(pre));
     }
     //获取验证码
-    public Observable<VerCode> getCode(@NotNull VerCodeRequest request) {
+    public Observable<VerCode> getCode(@NotNull VerCodeRequest request,String pre) {
         return mAPIStore.getVerifyCode(request)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(pre));
     }
 
     //注册
-    public Observable<RegisterInfo> register(@NotNull RegisterRequest request) {
+    public Observable<RegisterInfo> register(@NotNull RegisterRequest request,String pre) {
         return mAPIStore.register(request)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(pre));
     }
     //登录
-    public Observable<RegisterInfo> login(Map<String,Object> request) {
+    public Observable<RegisterInfo> login(Map<String,Object> request,String pre) {
         return mAPIStore.login(request)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(pre));
     }
 
     //上传日志
@@ -154,12 +154,12 @@ public class APIManager {
     //上传日志
     public Observable<Boolean>  addActive(AddActiveRequest request) {
         return mAPIStore.addActive(request)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(""));
     }
 
     //检测更新
-    public Observable<VersionInfo>  getNewVersion(String packageName) {
+    public Observable<VersionInfo>  getNewVersion(String packageName,String pre) {
         return mAPIStore.getNewVersion(packageName)
-                .compose(RxHelper.handleResult());
+                .compose(RxHelper.handleResult(pre));
     }
 }
