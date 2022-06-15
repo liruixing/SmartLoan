@@ -244,7 +244,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
         }
         webSettings.domStorageEnabled = true
         webSettings.javaScriptEnabled = true
-        webView?.addJavascriptInterface(injector, "FKSDKJsFramework");
+        webView?.addJavascriptInterface(injector!!, "FKSDKJsFramework");
 
         /**
          * 是否支持 viewport 标签或宽视图，
@@ -329,7 +329,7 @@ class WebActivity : BaseMVPActivity<IWebView, WebPresenter>(), IWebView {
             //-> onPageFinished(重定向前的地址) -> onPageStarted -> onPageFinished(重定向后)
             override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
                 Log.i("TAG", "shouldOverrideUrlLoading: $url")
-                view?.loadUrl(url)
+                view?.loadUrl(url!!)
                 return true
             }
 

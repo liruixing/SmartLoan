@@ -78,7 +78,7 @@ object AccountInfo {
                         },
                         {
                             uploadList.clear()
-                            Log.d("TAG",it.message)
+                            it.message?.let { it1 -> Log.d("TAG", it1) }
                         },
                         {
                             uploadList.clear()

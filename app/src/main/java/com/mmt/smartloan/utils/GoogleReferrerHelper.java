@@ -131,7 +131,7 @@ public class GoogleReferrerHelper {
             request.setSerial("");
         }else{
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                request.setSerial(Build.getSerial() + "");
+                request.setSerial(DeviceIdUtil.getDeviceSerial());
             }
         }
         request.setReleaseDate(Build.TIME);
